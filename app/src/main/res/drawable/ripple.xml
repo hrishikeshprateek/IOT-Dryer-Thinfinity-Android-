@@ -1,0 +1,17 @@
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <corners android:radius="15dp" /> <!-- Adjust the radius to match your rounded corners -->
+            <solid android:color="@android:color/white" /> <!-- Use any color for the mask -->
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="15dp" /> <!-- Adjust the radius to match your rounded corners -->
+        </shape>
+    </item>
+
+</ripple>
