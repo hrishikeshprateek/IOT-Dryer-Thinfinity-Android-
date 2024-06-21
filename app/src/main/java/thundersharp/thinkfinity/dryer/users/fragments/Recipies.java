@@ -68,7 +68,7 @@ public class Recipies extends Fragment {
 
         SpringServerHelper
                 .getInstance(view.getContext())
-                .getPublicRecipes(10, new OnServerEvents() {
+                .getPublicRecipes(-1, new OnServerEvents() {
                     @Override
                     public void onQuerySuccessful(JSONObject response) {
                         try {

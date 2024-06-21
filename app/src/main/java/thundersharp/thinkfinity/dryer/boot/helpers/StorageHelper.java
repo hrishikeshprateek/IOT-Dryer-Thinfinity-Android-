@@ -36,6 +36,23 @@ public class StorageHelper {
         }else return null;
     }
 
+    public String getRawToken(){
+        if (sharedPreferences != null) {
+            return sharedPreferences.getString("auth_token_raw",null);
+        }else return null;
+    }
+
+    public boolean saveRawToken(String token){
+        if (sharedPreferences == null) return false;
+        else {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("auth_token_raw",token);
+            editor.apply();
+            return true;
+        }
+    }
+
+
     public boolean storeJWTData(Map<String, Object> data){
         if (sharedPreferences == null) return false;
         else {

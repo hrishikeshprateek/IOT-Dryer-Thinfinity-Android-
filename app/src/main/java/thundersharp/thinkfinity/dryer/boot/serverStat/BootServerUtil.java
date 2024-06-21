@@ -12,7 +12,7 @@ import java.lang.ref.WeakReference;
 public class BootServerUtil {
 
     private final WeakReference<Context> context;
-    public static String baseUri = "http://192.168.0.115:8080/";
+    public static String baseUri = "http://api.aqozone.com/";
 
     public static BootServerUtil getInstance(Context context){
         return new BootServerUtil(new WeakReference<>(context));

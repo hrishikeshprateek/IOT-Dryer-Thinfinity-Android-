@@ -48,35 +48,38 @@ public class MasterLogin extends AppCompatActivity {
                 AuthHelper
                         .getInstance(this)
                         .performLogin(username.getText().toString(), password.getText().toString(), new OnAuthEvent() {
-                    @Override
-                    public void OnLoginSuccess(LoginResponse loginResponse) {
-                        Toast.makeText(MasterLogin.this, loginResponse.token, Toast.LENGTH_SHORT).show();
-                        Map<String, Object> claims = JSONUtils.extractClaimsFromToken(loginResponse.token);
+                            @Override
+                            public void OnLoginSuccess(LoginResponse loginResponse) {
+                                Toast.makeText(MasterLogin.this, loginResponse.token, Toast.LENGTH_SHORT).show();
+                                Map<String, Object> claims = JSONUtils.extractClaimsFromToken(loginResponse.token);
 
-                        StorageHelper
-                                .getInstance(MasterLogin.this)
-                                .initUserJWTDataStorage()
-                                .storeJWTData(claims);
-                        userAuthData = StorageHelper
-                                .getInstance(MasterLogin.this)
-                                .initUserJWTDataStorage()
-                                .getStoredJWTData();
+                                StorageHelper storageHelper = StorageHelper
+                                        .getInstance(MasterLogin.this)
+                                        .initUserJWTDataStorage();
 
-                        startUserLevelAppBootup(userAuthData);
-                        alertDialog.dismiss();
-                    }
+                                storageHelper.storeJWTData(claims);
+                                storageHelper.saveRawToken(loginResponse.token);
 
-                    @Override
-                    public void OnLoginFailure(Exception e) {
-                        alertDialog.dismiss();
-                        new AlertDialog.Builder(MasterLogin.this)
-                                .setCancelable(true)
-                                .setMessage(e.getMessage())
-                                .setTitle("ERROR")
-                                .setPositiveButton("OK",(u,i) -> u.dismiss())
-                                .show();
-                    }
-                });
+                                userAuthData = StorageHelper
+                                        .getInstance(MasterLogin.this)
+                                        .initUserJWTDataStorage()
+                                        .getStoredJWTData();
+
+                                startUserLevelAppBootup(userAuthData);
+                                alertDialog.dismiss();
+                            }
+
+                            @Override
+                            public void OnLoginFailure(Exception e) {
+                                alertDialog.dismiss();
+                                new AlertDialog.Builder(MasterLogin.this)
+                                        .setCancelable(true)
+                                        .setMessage(e.getMessage())
+                                        .setTitle("ERROR")
+                                        .setPositiveButton("OK",(u,i) -> u.dismiss())
+                                        .show();
+                            }
+                        });
             }else alertDialog.dismiss();
         });
 

@@ -12,14 +12,17 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 
+import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.serverStat.BootServerUtil;
 import thundersharp.thinkfinity.dryer.users.core.interfaces.OnServerEvents;
 
 public class SpringServerHelper {
 
     private final WeakReference<Context> contextWeakReference;
+    private StorageHelper storageHelper;
 
     public SpringServerHelper(WeakReference<Context> contextWeakReference) {
+        storageHelper = StorageHelper.getInstance(contextWeakReference.get()).initUserJWTDataStorage();
         this.contextWeakReference = contextWeakReference;
     }
 
@@ -28,8 +31,8 @@ public class SpringServerHelper {
     }
 
     public SpringServerHelper getPublicRecipes(int count, OnServerEvents onServerEvents){
-        System.out.println(BootServerUtil.baseUri+"api/v1/user/recipes/getAll/?count="+count);
-        executeVolleyCommands(onServerEvents, BootServerUtil.baseUri+"api/v1/user/recipes/getAll/?count="+count);
+        System.out.println(BootServerUtil.baseUri+"api/v1/user/recipes/getAll/?count="+count+"&auth="+ storageHelper.getRawToken());
+        executeVolleyCommands(onServerEvents, BootServerUtil.baseUri+"api/v1/user/recipes/getAll/?count="+count+"&auth="+ storageHelper.getRawToken());
         return this;
     }
 
