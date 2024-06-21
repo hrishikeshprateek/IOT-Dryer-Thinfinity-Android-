@@ -26,4 +26,9 @@
     <string name="temporary_recipe">Temporary Recipe</string>
     <string name="no_temp_recipe_foun">No Temp recipe found click here to add a new recipie for the device.</string>
     <string name="welcome_back_hrishikesh">Welcome Back, Hrishikesh</string>
+    <string name="global_view">Global View</string>
+    <string name="your_devices">Your Devices</string>
+    <string name="private_recipes">Private Recipes</string>
+    <string name="jobsheet_history">Jobsheet history</string>
+    <string name="active_inactive_devices">Active/inactive Devices</string>
 </resources>
