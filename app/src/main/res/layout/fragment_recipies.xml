@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F1F1F1"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".users.fragments.Recipies">
+    tools:context=".users.ui.fragments.Recipies">
 
     <RelativeLayout
         android:layout_width="match_parent"

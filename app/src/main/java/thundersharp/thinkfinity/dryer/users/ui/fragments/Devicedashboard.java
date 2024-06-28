@@ -1,6 +1,7 @@
-package thundersharp.thinkfinity.dryer.users.fragments;
+package thundersharp.thinkfinity.dryer.users.ui.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import thundersharp.thinkfinity.dryer.R;
+import thundersharp.thinkfinity.dryer.users.ui.support.SupportHome;
 
 
 public class Devicedashboard extends Fragment {
@@ -67,6 +69,8 @@ public class Devicedashboard extends Fragment {
         slider.setCustomAnimation(new DescriptionAnimation());
         slider.setDuration(4000);
         slider.stopCyclingWhenTouch(false);
+
+        view.findViewById(R.id.support_center).setOnClickListener(t->startActivity(new Intent(getActivity(), SupportHome.class)));
 
         return view;
     }

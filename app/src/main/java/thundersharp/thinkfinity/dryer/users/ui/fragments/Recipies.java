@@ -1,4 +1,4 @@
-package thundersharp.thinkfinity.dryer.users.fragments;
+package thundersharp.thinkfinity.dryer.users.ui.fragments;
 
 import static android.app.Activity.RESULT_OK;
 

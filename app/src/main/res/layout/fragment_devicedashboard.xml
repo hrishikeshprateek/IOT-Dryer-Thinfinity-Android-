@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".users.fragments.Devicedashboard">
+    tools:context=".users.ui.fragments.Devicedashboard">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -681,6 +681,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/support_center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="50dp"

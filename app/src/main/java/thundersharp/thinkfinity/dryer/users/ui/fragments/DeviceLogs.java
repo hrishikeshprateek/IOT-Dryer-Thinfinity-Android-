@@ -1,4 +1,4 @@
-package thundersharp.thinkfinity.dryer.users.fragments;
+package thundersharp.thinkfinity.dryer.users.ui.fragments;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import thundersharp.thinkfinity.dryer.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AllDevices#newInstance} factory method to
+ * Use the {@link DeviceLogs#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AllDevices extends Fragment {
+public class DeviceLogs extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class AllDevices extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AllDevices() {
+    public DeviceLogs() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class AllDevices extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AllDevices.
+     * @return A new instance of fragment DeviceLogs.
      */
     // TODO: Rename and change types and number of parameters
-    public static AllDevices newInstance(String param1, String param2) {
-        AllDevices fragment = new AllDevices();
+    public static DeviceLogs newInstance(String param1, String param2) {
+        DeviceLogs fragment = new DeviceLogs();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class AllDevices extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_all_devices, container, false);
+        return inflater.inflate(R.layout.fragment_device_logs, container, false);
     }
 }

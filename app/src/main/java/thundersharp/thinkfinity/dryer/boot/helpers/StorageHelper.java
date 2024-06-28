@@ -1,12 +1,16 @@
 package thundersharp.thinkfinity.dryer.boot.helpers;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
 
+import thundersharp.thinkfinity.dryer.boot.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.models.UserAuthData;
+import thundersharp.thinkfinity.dryer.users.ui.support.SupportHome;
 
 public class StorageHelper {
 
@@ -67,12 +71,14 @@ public class StorageHelper {
         }
     }
 
-    public boolean logOut(){
+    public boolean logOut(Activity supportHome){
         if (sharedPreferences == null) return false;
         else {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();
             editor.apply();
+            supportHome.startActivity(new Intent(supportHome, MasterLogin.class));
+            supportHome.finish();
             return true;
         }
     }

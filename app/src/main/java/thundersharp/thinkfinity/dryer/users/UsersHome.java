@@ -28,11 +28,11 @@ import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.Utils;
 import thundersharp.thinkfinity.dryer.boot.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
-import thundersharp.thinkfinity.dryer.users.fragments.About;
-import thundersharp.thinkfinity.dryer.users.fragments.AllDevices;
-import thundersharp.thinkfinity.dryer.users.fragments.DeviceLogs;
-import thundersharp.thinkfinity.dryer.users.fragments.Devicedashboard;
-import thundersharp.thinkfinity.dryer.users.fragments.Recipies;
+import thundersharp.thinkfinity.dryer.users.ui.fragments.About;
+import thundersharp.thinkfinity.dryer.users.ui.fragments.AllDevices;
+import thundersharp.thinkfinity.dryer.users.ui.fragments.DeviceLogs;
+import thundersharp.thinkfinity.dryer.users.ui.fragments.Devicedashboard;
+import thundersharp.thinkfinity.dryer.users.ui.fragments.Recipies;
 
 public class UsersHome extends AppCompatActivity {
 

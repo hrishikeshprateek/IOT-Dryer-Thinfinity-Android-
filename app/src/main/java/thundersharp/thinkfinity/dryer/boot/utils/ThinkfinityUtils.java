@@ -21,6 +21,11 @@ import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 
 public class ThinkfinityUtils {
     public static NsdServiceInfo nsdServiceInfoGlobal = null;
+    public static final String HOST_BASE_ADDR_WITH_PORT = "http://api.aqzone.com";
+    public static final String USER_NAME_JWT = "name";
+    public static final String USER_EMAIL_JWT = "email";
+    public static final String USER_PHONE_JWT = "phone_number";
+    public static final String USER_UID_JWT = "user_id";
 
     public static void showSnackbar(View view, String message) {
         Snackbar.make(view.getContext(), view,
@@ -35,7 +40,7 @@ public class ThinkfinityUtils {
     }
 
     public static void signOut(Activity activity){
-        StorageHelper.getInstance(activity).initUserJWTDataStorage().logOut();
+        StorageHelper.getInstance(activity).initUserJWTDataStorage().logOut(activity);
     }
 
 
