@@ -31,7 +31,6 @@ public class SpringServerHelper {
     }
 
     public SpringServerHelper getPublicRecipes(int count, OnServerEvents onServerEvents){
-        System.out.println(BootServerUtil.baseUri+"api/v1/user/recipes/getAll/?count="+count+"&auth="+ storageHelper.getRawToken());
         executeVolleyCommands(onServerEvents, BootServerUtil.baseUri+"api/v1/user/recipes/getAll/?count="+count+"&auth="+ storageHelper.getRawToken());
         return this;
     }

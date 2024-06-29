@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -35,6 +36,23 @@ public class ApiUtils {
             requestQueue = Volley.newRequestQueue(ctx.getApplicationContext());
         }
         return requestQueue;
+    }
+
+    public <T> void fetchDataRawWithoutFormat(String url, Class<T> modelClass, final ApiResponseCallback<List<T>> callback) {
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        Gson gson = new Gson();
+                        Type type = TypeToken.getParameterized(List.class, modelClass).getType();
+                        List<T> list = gson.fromJson(response.toString(), type);
+                        callback.onSuccess(list);
+                    } catch (Exception e) {
+                        callback.onError(e.getMessage());
+                    }
+                },
+                error -> callback.onError(error.getMessage()));
+
+        getRequestQueue().add(jsonObjectRequest);
     }
 
     public <T> void fetchData(String url, Class<T> modelClass, final ApiResponseCallback<List<T>> callback) {

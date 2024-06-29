@@ -50,7 +50,7 @@ public class AllDevices extends Fragment {
                 .fetchData(url, Device.class, new ApiUtils.ApiResponseCallback<List<Device>>() {
                     @Override
                     public void onSuccess(List<Device> result) {
-                        requireActivity().runOnUiThread(() -> recyclerView.setAdapter(new DeviceViwer(result)));
+                        recyclerView.setAdapter(new DeviceViwer(result));
                     }
 
                     @Override

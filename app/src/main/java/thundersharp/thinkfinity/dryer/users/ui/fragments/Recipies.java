@@ -34,6 +34,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import thundersharp.thinkfinity.dryer.R;
+import thundersharp.thinkfinity.dryer.boot.ApiUtils;
+import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
+import thundersharp.thinkfinity.dryer.boot.serverStat.BootServerUtil;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.core.SpringServerHelper;
 import thundersharp.thinkfinity.dryer.users.core.adapters.RecipieHolderAdapter;
@@ -46,6 +49,7 @@ public class Recipies extends Fragment {
     private ExecutorService executorService;
     private RecipieHolderAdapter adapter;
     private RecyclerView recyclerView;
+    private StorageHelper storageHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +57,7 @@ public class Recipies extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_recipies, container, false);
         executorService = Executors.newSingleThreadExecutor();
+        storageHelper = StorageHelper.getInstance(requireActivity()).initUserJWTDataStorage();
 
         recyclerView = view.findViewById(R.id.rec);
         search_bar_edit_text = view.findViewById(R.id.search_bar_edit_text);
@@ -74,7 +79,7 @@ public class Recipies extends Fragment {
         });
 
         setupSearchBar();
-        fetchData();
+        fetchData(-1);
         return view;
     }
 
@@ -94,28 +99,20 @@ public class Recipies extends Fragment {
         });
     }
 
-    private void fetchData() {
-        executorService.execute(() -> SpringServerHelper
+    private void fetchData(int count) {
+        String url = BootServerUtil.baseUri+"api/v1/user/recipes/getAll/?count="+count+"&auth="+ storageHelper.getRawToken();
+        executorService.execute(() -> ApiUtils
                 .getInstance(requireContext())
-                .getPublicRecipes(-1, new OnServerEvents() {
+                .fetchData(url, PublicRecipe.class, new ApiUtils.ApiResponseCallback<List<PublicRecipe>>() {
                     @Override
-                    public void onQuerySuccessful(JSONObject response) {
-                        requireActivity().runOnUiThread(() -> {
-                            try {
-                                Type type = TypeToken.getParameterized(List.class, PublicRecipe.class).getType();
-                                List<PublicRecipe> list = new Gson().fromJson(response.getJSONArray("data").toString(), type);
-                                adapter = new RecipieHolderAdapter(list);
-                                recyclerView.setAdapter(adapter);
-                            } catch (JSONException e) {
-                                ThinkfinityUtils.createErrorMessage(requireContext(), e.getMessage()).show();
-                                e.printStackTrace();
-                            }
-                        });
+                    public void onSuccess(List<PublicRecipe> result) {
+                        adapter = new RecipieHolderAdapter(result);
+                        recyclerView.setAdapter(adapter);
                     }
 
                     @Override
-                    public void onQueryFailure(Exception e) {
-                        requireActivity().runOnUiThread(() -> ThinkfinityUtils.createErrorMessage(requireContext(), e.getMessage()).show());
+                    public void onError(String errorMessage) {
+                        ThinkfinityUtils.createErrorMessage(requireContext(), errorMessage).show();
                     }
                 }));
     }
