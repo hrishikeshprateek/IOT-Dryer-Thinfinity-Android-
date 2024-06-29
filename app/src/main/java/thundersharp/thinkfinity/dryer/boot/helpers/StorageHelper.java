@@ -8,9 +8,8 @@ import android.content.SharedPreferences;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 
-import thundersharp.thinkfinity.dryer.boot.MasterLogin;
+import thundersharp.thinkfinity.dryer.boot.ui.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.models.UserAuthData;
-import thundersharp.thinkfinity.dryer.users.ui.support.SupportHome;
 
 public class StorageHelper {
 

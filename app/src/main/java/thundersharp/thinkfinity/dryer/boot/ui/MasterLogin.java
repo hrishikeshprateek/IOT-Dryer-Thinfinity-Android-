@@ -1,4 +1,4 @@
-package thundersharp.thinkfinity.dryer.boot;
+package thundersharp.thinkfinity.dryer.boot.ui;
 
 import android.content.Intent;
 import android.os.Bundle;

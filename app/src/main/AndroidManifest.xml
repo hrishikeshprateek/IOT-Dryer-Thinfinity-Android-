@@ -25,10 +25,10 @@
             android:name=".users.ui.support.SupportHome"
             android:exported="false" />
         <activity
-            android:name=".boot.ActivityIntro"
+            android:name=".boot.ui.ActivityIntro"
             android:exported="false" />
         <activity
-            android:name=".boot.MasterLogin"
+            android:name=".boot.ui.MasterLogin"
             android:exported="false" />
         <activity
             android:name=".users.UsersHome"
@@ -40,7 +40,7 @@
             android:name=".manager.ManagerHome"
             android:exported="false" />
         <activity
-            android:name=".boot.SplashScreen"
+            android:name=".boot.ui.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

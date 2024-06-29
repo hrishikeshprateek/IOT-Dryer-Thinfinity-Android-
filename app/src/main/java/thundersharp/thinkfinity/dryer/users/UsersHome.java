@@ -26,7 +26,7 @@ import java.util.Locale;
 
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.Utils;
-import thundersharp.thinkfinity.dryer.boot.MasterLogin;
+import thundersharp.thinkfinity.dryer.boot.ui.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.About;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.AllDevices;
