@@ -31,4 +31,6 @@
     <string name="private_recipes">Private Recipes</string>
     <string name="jobsheet_history">Jobsheet history</string>
     <string name="active_inactive_devices">Active/inactive Devices</string>
+    <string name="subscription_starts">Subscription starts:</string>
+    <string name="subscription_ends">Subscription ends:</string>
 </resources>

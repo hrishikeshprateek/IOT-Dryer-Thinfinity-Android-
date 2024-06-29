@@ -21,7 +21,7 @@ import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 
 public class ThinkfinityUtils {
     public static NsdServiceInfo nsdServiceInfoGlobal = null;
-    public static final String HOST_BASE_ADDR_WITH_PORT = "http://api.aqzone.com";
+    public static final String HOST_BASE_ADDR_WITH_PORT = "http://api.aqozone.com";
     public static final String USER_NAME_JWT = "name";
     public static final String USER_EMAIL_JWT = "email";
     public static final String USER_PHONE_JWT = "phone_number";

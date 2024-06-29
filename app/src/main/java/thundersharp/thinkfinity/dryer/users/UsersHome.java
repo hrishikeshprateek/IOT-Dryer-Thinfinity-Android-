@@ -177,7 +177,7 @@ public class UsersHome extends AppCompatActivity {
         set_device.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewPager.setCurrentItem(4);
+                viewPager.setCurrentItem(3);
             }
         });
         if (pos != null)
