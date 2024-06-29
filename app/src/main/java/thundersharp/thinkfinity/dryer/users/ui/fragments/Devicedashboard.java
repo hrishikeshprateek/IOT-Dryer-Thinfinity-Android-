@@ -1,5 +1,7 @@
 package thundersharp.thinkfinity.dryer.users.ui.fragments;
 
+import static thundersharp.thinkfinity.dryer.users.UsersHome.viewPager;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.request.RequestOptions;
@@ -24,8 +27,11 @@ import java.util.concurrent.Executors;
 
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.boot.ApiUtils;
+import thundersharp.thinkfinity.dryer.boot.DeviceConfig;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
+import thundersharp.thinkfinity.dryer.boot.utils.TimeUtils;
+import thundersharp.thinkfinity.dryer.users.core.model.Device;
 import thundersharp.thinkfinity.dryer.users.core.model.UserDashbordData;
 import thundersharp.thinkfinity.dryer.users.ui.support.SupportHome;
 
@@ -37,14 +43,26 @@ public class Devicedashboard extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_devicedashboard, container, false);
+        Device deviceConfig = DeviceConfig.getDeviceConfig(getContext()).initializeStorage().getCurrentDevice();
 
         executorService = Executors.newSingleThreadExecutor();
 
         setupSlider(view);
         view.findViewById(R.id.support_center).setOnClickListener(t -> startActivity(new Intent(getActivity(), SupportHome.class)));
         syncData(view);
+
+        if (deviceConfig == null){
+            new AlertDialog.Builder(requireActivity())
+                    .setMessage("No default device selected, select a device from the list first to proceed further. If your device is not shown up yet contact your manager !!")
+                    .setPositiveButton("SELECT", (e,r)-> viewPager.setCurrentItem(3))
+                    .setCancelable(false)
+                    .create()
+                    .show();
+        }else {
+            ((TextView)view.findViewById(R.id.device_name)).setText(deviceConfig.getDevice_name());
+            ((TextView)view.findViewById(R.id.expires_on)).setText(TimeUtils.getTimeFromTimeStamp(deviceConfig.getSubscriptionActiveTill()));
+        }
 
         return view;
     }

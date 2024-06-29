@@ -34,4 +34,5 @@
     <string name="subscription_starts">Subscription starts:</string>
     <string name="subscription_ends">Subscription ends:</string>
     <string name="dash">--</string>
+    <string name="shows_current_status_and_info_of_the_selected_device_please_update_this_description_section_later_before_deploying_this_project">Shows current status and info of the selected device, please update this description section later before deploying this project.</string>
 </resources>

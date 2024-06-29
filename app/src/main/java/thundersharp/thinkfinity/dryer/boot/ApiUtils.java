@@ -1,6 +1,7 @@
 package thundersharp.thinkfinity.dryer.boot;
 
 import android.content.Context;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -8,7 +9,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.util.List;
 

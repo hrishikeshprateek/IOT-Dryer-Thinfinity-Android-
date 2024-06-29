@@ -55,7 +55,7 @@ public class AllDevices extends Fragment {
 
                     @Override
                     public void onError(String errorMessage) {
-                        requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
+                        requireActivity().runOnUiThread(() -> ThinkfinityUtils.createErrorMessage(getActivity(), errorMessage).show());
                     }
                 });
     }

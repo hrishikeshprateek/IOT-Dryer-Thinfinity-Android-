@@ -19,16 +19,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="5dp"
-                app:cardBackgroundColor="#000">
+                android:layout_marginTop="15dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#fff">
 
                 <com.glide.slider.library.SliderLayout
                     android:id="@+id/slider"
                     android:layout_width="match_parent"
-                    android:layout_height="190dp"
+                    android:layout_height="200dp"
                     app:indicator_visibility="visible"
                     app:pager_animation="Default" />
 
@@ -45,50 +44,70 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:orientation="vertical"
                     android:layout_marginHorizontal="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="19sp"
                         android:textColor="#000000"
+                        android:textSize="22sp"
                         android:textStyle="bold"
-                        android:fontFamily="@font/roboto"
                         android:text="@string/status"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/calibri"
-                        android:textSize="17sp"
-                        android:layout_marginTop="2dp"
-                        android:text="Shows current status and info of the selected device, please update this decription section later before deploying this project."/>
-
+                        android:layout_marginTop="5dp"
+                        android:textSize="14sp"
+                        android:text="@string/shows_current_status_and_info_of_the_selected_device_please_update_this_description_section_later_before_deploying_this_project"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:weightSum="2"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="15dp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/calibrib"
-                            android:textSize="16sp"
                             android:textStyle="bold"
-                            android:text="Current Device's boot time: "/>
+                            android:textSize="14sp"
+                            android:text="Select Device's Name: "/>
+
+                        <TextView
+                            android:id="@+id/device_name"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:textSize="14sp"
+                            android:layout_height="wrap_content"
+                            android:text="--"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/calibri"
-                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:text="Device's Last boot time: "/>
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
                             android:text="21st January 07:40:26PM"/>
 
                     </LinearLayout>
@@ -96,23 +115,22 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/calibrib"
-                            android:textSize="16sp"
                             android:textStyle="bold"
+                            android:textSize="14sp"
                             android:text="Last cooked recipe: "/>
 
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/calibri"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:text="Vinay Kebab"/>
 
                     </LinearLayout>
@@ -120,23 +138,22 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/calibrib"
-                            android:textSize="16sp"
                             android:textStyle="bold"
+                            android:textSize="14sp"
                             android:text="Host (this) device's IP: "/>
 
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/calibri"
-                            android:textSize="16sp"
+                            android:textSize="14sp"
                             android:text="192.168.139.90"/>
 
                     </LinearLayout>
@@ -144,49 +161,74 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:weightSum="2"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/calibrib"
-                            android:textSize="15sp"
                             android:textStyle="bold"
-                            android:text="Selected device status: "/>
+                            android:textSize="14sp"
+                            android:text="Expires On: "/>
+
+                        <TextView
+                            android:textColor="#FF0000"
+                            android:textStyle="bold"
+                            android:id="@+id/expires_on"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:text="--"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/calibri"
-                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:text="Device status: "/>
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:textStyle="bold"
                             android:textColor="#4CAF50"
+                            android:textSize="14sp"
                             android:text="DEVICE ON"/>
 
                     </LinearLayout>
-
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/progressTemp"
                     android:layout_width="match_parent"
-                    android:layout_height="170dp"
+                    android:layout_height="160dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:weightSum="2">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="0dp"
-                        android:layout_height="140dp"
+                        android:layout_height="150dp"
                         android:layout_marginHorizontal="10dp"
                         android:layout_weight="1"
                         app:cardBackgroundColor="#262626"
-                        app:cardCornerRadius="9dp"
-                        app:cardElevation="5dp">
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp">
 
                         <me.itangqi.waveloadingview.WaveLoadingView
                             android:id="@+id/stallsVisited"
@@ -205,25 +247,23 @@
                             app:wlv_titleBottomStrokeWidth="2dp"
                             app:wlv_titleCenter="40 C"
                             app:wlv_titleCenterColor="@android:color/white"
-                            app:wlv_titleCenterSize="19sp"
+                            app:wlv_titleCenterSize="20sp"
                             app:wlv_titleCenterStrokeColor="#8A8888"
                             app:wlv_titleCenterStrokeWidth="2dp"
                             app:wlv_waveAmplitude="50"
                             app:wlv_waveColor="#A11545" />
 
-
                     </androidx.cardview.widget.CardView>
-
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/detailedAtt"
                         android:layout_width="0dp"
-                        android:layout_height="140dp"
+                        android:layout_height="150dp"
                         android:layout_marginHorizontal="10dp"
                         android:layout_weight="1"
                         app:cardBackgroundColor="#F6F6F6"
-                        app:cardCornerRadius="9dp"
-                        app:cardElevation="5dp">
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="4dp">
 
                         <me.itangqi.waveloadingview.WaveLoadingView
                             android:id="@+id/projectsReviwed"
@@ -242,15 +282,13 @@
                             app:wlv_titleBottomStrokeWidth="2dp"
                             app:wlv_titleCenter="60 rh"
                             app:wlv_titleCenterColor="@android:color/white"
-                            app:wlv_titleCenterSize="19sp"
+                            app:wlv_titleCenterSize="20sp"
                             app:wlv_titleCenterStrokeColor="#8A8888"
                             app:wlv_titleCenterStrokeWidth="2dp"
                             app:wlv_waveAmplitude="50"
                             app:wlv_waveColor="#03A9F4" />
 
-
                     </androidx.cardview.widget.CardView>
-
 
                 </LinearLayout>
 
@@ -258,15 +296,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="0dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
                         android:textColor="#000"
                         android:textStyle="bold"
-                        android:fontFamily="@font/roboto"
+                        android:textSize="16sp"
                         android:text="@string/recipe_time_elapsed"/>
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -274,7 +311,7 @@
                         android:layout_width="match_parent"
                         android:indeterminate="false"
                         app:trackThickness="8dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="8dp"
                         android:progress="40"
                         android:progressTint="#0A9D8F"
                         app:trackCornerRadius="10dp"/>
@@ -282,12 +319,12 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
+                        android:layout_marginTop="4dp"
                         android:orientation="horizontal">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="14sp"
                             android:textColor="#000"
                             android:gravity="start"
                             android:layout_alignParentStart="true"
@@ -297,7 +334,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="14sp"
                             android:textColor="#000"
                             android:gravity="end"
                             android:layout_alignParentEnd="true"
@@ -312,7 +349,7 @@
                             android:gravity="end"
                             android:text="160 Hrs Completed"
                             android:textColor="#000"
-                            android:textSize="15sp"
+                            android:textSize="14sp"
                             tools:ignore="HardcodedText" />
 
                     </RelativeLayout>
@@ -322,12 +359,11 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="19sp"
+                    android:textSize="20sp"
                     android:textColor="#000000"
                     android:textStyle="bold"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/roboto"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
                     android:text="@string/global_view"/>
 
                 <RelativeLayout
@@ -338,7 +374,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="15dp"
                         android:weightSum="3"
                         android:baselineAligned="false">
 
@@ -374,7 +410,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/calibrib"
+                                android:textStyle="bold"
                                 android:text="@string/your_devices"
                                 android:textSize="15sp" />
 
@@ -420,7 +456,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/calibrib"
+                                android:textStyle="bold"
                                 android:text="@string/private_recipes"
                                 android:textSize="15sp" />
 
@@ -466,7 +502,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/calibrib"
+                                android:textStyle="bold"
                                 android:text="Public Recipes"
                                 android:textSize="15sp" />
 
@@ -521,7 +557,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/calibrib"
+                                android:textStyle="bold"
                                 android:text="@string/jobsheet_history"
                                 android:textSize="15sp" />
 
@@ -556,7 +592,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/calibrib"
+                                android:textStyle="bold"
                                 android:text="@string/active_inactive_devices"
                                 android:textSize="15sp" />
 
@@ -573,8 +609,7 @@
                     android:textColor="#000000"
                     android:textStyle="bold"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/roboto"
+                    android:layout_marginTop="15dp"
                     android:text="@string/temporary_recipe"/>
 
 
@@ -583,7 +618,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="150dp"
                     app:cardCornerRadius="15dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     app:cardElevation="5dp"
                     android:layout_marginHorizontal="10dp">
 
@@ -616,7 +651,6 @@
                                 android:textSize="15sp"
                                 android:textStyle="bold"
                                 android:textAlignment="center"
-                                android:fontFamily="@font/calibri"
                                 android:text="@string/no_temp_recipe_foun"/>
 
                         </LinearLayout>
@@ -657,7 +691,6 @@
                             android:textSize="15sp"
                             android:textColor="#000000"
                             android:textStyle="bold"
-                            android:fontFamily="@font/roboto"
                             android:layout_toEndOf="@+id/profileIcon"
                             android:layout_marginStart="10dp"
                             android:layout_centerVertical="true"
@@ -716,7 +749,6 @@
                             android:textSize="15sp"
                             android:textColor="#000000"
                             android:textStyle="bold"
-                            android:fontFamily="@font/roboto"
                             android:layout_toEndOf="@+id/supportIcon"
                             android:layout_marginStart="10dp"
                             android:layout_centerVertical="true"

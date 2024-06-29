@@ -104,9 +104,10 @@ public class Recipies extends Fragment {
                             try {
                                 Type type = TypeToken.getParameterized(List.class, PublicRecipe.class).getType();
                                 List<PublicRecipe> list = new Gson().fromJson(response.getJSONArray("data").toString(), type);
-                                recyclerView.setAdapter(new RecipieHolderAdapter(list));
+                                adapter = new RecipieHolderAdapter(list);
+                                recyclerView.setAdapter(adapter);
                             } catch (JSONException e) {
-                                ThinkfinityUtils.createErrorMessage(requireContext(), e.getMessage());
+                                ThinkfinityUtils.createErrorMessage(requireContext(), e.getMessage()).show();
                                 e.printStackTrace();
                             }
                         });
@@ -114,7 +115,7 @@ public class Recipies extends Fragment {
 
                     @Override
                     public void onQueryFailure(Exception e) {
-                        requireActivity().runOnUiThread(() -> ThinkfinityUtils.createErrorMessage(requireContext(), e.getMessage()));
+                        requireActivity().runOnUiThread(() -> ThinkfinityUtils.createErrorMessage(requireContext(), e.getMessage()).show());
                     }
                 }));
     }

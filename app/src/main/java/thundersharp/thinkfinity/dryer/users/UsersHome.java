@@ -26,10 +26,14 @@ import java.util.Locale;
 
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.Utils;
+import thundersharp.thinkfinity.dryer.boot.DeviceConfig;
+import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
+import thundersharp.thinkfinity.dryer.boot.models.UserAuthData;
 import thundersharp.thinkfinity.dryer.boot.ui.ActivityIntro;
 import thundersharp.thinkfinity.dryer.boot.ui.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.core.interfaces.onRestart;
+import thundersharp.thinkfinity.dryer.users.core.model.Device;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.About;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.AllDevices;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.DeviceLogs;
@@ -47,7 +51,7 @@ public class UsersHome extends AppCompatActivity implements onRestart {
     private TextToSpeech t1;
     private AppCompatButton set_device, ping_server;
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +64,20 @@ public class UsersHome extends AppCompatActivity implements onRestart {
         dropDown = findViewById(R.id.dropdown_menu);
         set_device = findViewById(R.id.set_device);
         ping_server = findViewById(R.id.cPaye);
+
+        UserAuthData storageHelper = StorageHelper.getInstance(this).initUserJWTDataStorage().getStoredJWTData();
+        Device deviceConfig = DeviceConfig.getDeviceConfig(this).initializeStorage().getCurrentDevice();
+
         TextView selected_name = findViewById(R.id.selected_name);
         TextView device_uuid = findViewById(R.id.device_uuid);
+
+        if (storageHelper != null){
+            selected_name.setText("Welcome back, "+storageHelper.getName());
+        }
+        if (deviceConfig != null){
+            device_uuid.setText("Your current selected device is "+deviceConfig.getId());
+        }
+
 
 
         t1 = new TextToSpeech(this, status -> {
