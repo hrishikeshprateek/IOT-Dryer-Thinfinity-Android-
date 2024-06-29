@@ -19,7 +19,7 @@
     <string name="aaa">The Grilled Chicken Salad features tender chicken on mixed greens with cherry tomatoes, cucumber, and avocado. Tossed in a tangy vinaigrette, it\'s a delicious, nutritious choice for a.</string>
     <string name="created_at_2023_04_07">Created At: 2023-04-07</string>
     <string name="updated_at_2023_04_07">Updated At: 2023-04-07</string>
-    <string name="search_for_recipes_here">Search for recipes here ...</string>
+    <string name="search_for_recipes_here">Search for recipes by name, author, temp, humid ...</string>
     <string name="status">Status</string>
     <string name="recipe_time_elapsed">Recipe time elapsed</string>
     <string name="todo">TODO</string>
