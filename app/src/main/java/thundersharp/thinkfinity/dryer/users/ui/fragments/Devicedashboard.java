@@ -3,30 +3,30 @@ package thundersharp.thinkfinity.dryer.users.ui.fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.DefaultSliderView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import thundersharp.thinkfinity.dryer.R;
+import thundersharp.thinkfinity.dryer.boot.ApiUtils;
+import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
+import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.ui.support.SupportHome;
-
 
 public class Devicedashboard extends Fragment {
 
-    private SliderLayout slider;
-
+    //GET http://localhost:80{{auth}}
     @SuppressLint("CheckResult")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +34,7 @@ public class Devicedashboard extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_devicedashboard, container, false);
 
-        slider = view.findViewById(R.id.slider);
+        SliderLayout slider = view.findViewById(R.id.slider);
 
         List<String> listUrl = Arrays.asList(
                 "https://aqozone.com/wp-content/uploads/2022/11/vbbbb.webp",
@@ -72,6 +72,26 @@ public class Devicedashboard extends Fragment {
 
         view.findViewById(R.id.support_center).setOnClickListener(t->startActivity(new Intent(getActivity(), SupportHome.class)));
 
+        syncData();
         return view;
+    }
+
+    private void syncData(){
+        String uri = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT+
+                "/api/v1/user/get/user/dashboard/count/data/"+
+                StorageHelper.getInstance(getContext()).initUserJWTDataStorage().getRawToken();
+        ApiUtils
+                .getInstance(getContext())
+                .fetchDataNoList(uri, Devicedashboard.class, new ApiUtils.ApiResponseCallback<Devicedashboard>() {
+                    @Override
+                    public void onSuccess(Devicedashboard result) {
+                        Toast.makeText(getContext(), result.toString(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

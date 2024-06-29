@@ -1,7 +1,6 @@
 package thundersharp.thinkfinity.dryer.boot;
 
 import android.content.Context;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -15,25 +14,25 @@ import java.util.List;
 
 public class ApiUtils {
 
-    private static WeakReference<ApiUtils> instance;
+    private static ApiUtils instance;
     private RequestQueue requestQueue;
-    private static WeakReference<Context> ctx;
+    private static Context ctx;
 
     private ApiUtils(Context context) {
-        ctx = new WeakReference<>(context);
+        ctx = context;
         requestQueue = getRequestQueue();
     }
 
     public static synchronized ApiUtils getInstance(Context context) {
         if (instance == null) {
-            instance = new WeakReference<>(new ApiUtils(context));
+            instance =new ApiUtils(context);
         }
-        return instance.get();
+        return instance;
     }
 
     public RequestQueue getRequestQueue() {
         if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(ctx.get().getApplicationContext());
+            requestQueue = Volley.newRequestQueue(ctx.getApplicationContext());
         }
         return requestQueue;
     }
@@ -51,29 +50,25 @@ public class ApiUtils {
                     }
                 },
                 error -> callback.onError(error.getMessage()));
+
         getRequestQueue().add(jsonObjectRequest);
     }
 
+    public <T> void fetchDataNoList(String url, Class<T> modelClass, final ApiResponseCallback<T> callback) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        Gson gson = new Gson();
+                        callback.onSuccess(gson.fromJson(response.getJSONObject("data").toString(), modelClass));
+                    } catch (Exception e) {
+                        callback.onError(e.getMessage());
+                    }
+                },
+                error -> callback.onError(error.getMessage()));
+        getRequestQueue().add(jsonObjectRequest);
+    }
     public interface ApiResponseCallback<T> {
         void onSuccess(T result);
         void onError(String errorMessage);
-    }
-
-    public static class ApiResponse<T> {
-        private boolean success;
-        private List<T> data;
-        private String message;
-
-        public boolean isSuccess() {
-            return success;
-        }
-
-        public List<T> getData() {
-            return data;
-        }
-
-        public String getMessage() {
-            return message;
-        }
     }
 }
