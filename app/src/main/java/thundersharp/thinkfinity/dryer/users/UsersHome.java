@@ -78,8 +78,6 @@ public class UsersHome extends AppCompatActivity implements onRestart {
             device_uuid.setText("Your current selected device is "+deviceConfig.getId());
         }
 
-
-
         t1 = new TextToSpeech(this, status -> {
             if(status != TextToSpeech.ERROR) {
                 t1.setLanguage(Locale.US);
@@ -120,7 +118,7 @@ public class UsersHome extends AppCompatActivity implements onRestart {
                 }
                 return true;
             });
-            // Showing the popup menu
+
             popupMenu.show();
         });
 

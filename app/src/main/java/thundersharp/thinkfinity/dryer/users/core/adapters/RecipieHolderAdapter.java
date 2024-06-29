@@ -4,10 +4,16 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +78,7 @@ public class RecipieHolderAdapter extends RecyclerView.Adapter<RecipieHolderAdap
         return filteredRecipeData.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private final TextView textRecipeName;
         private final TextView textRecipeDescription;
@@ -83,7 +89,7 @@ public class RecipieHolderAdapter extends RecyclerView.Adapter<RecipieHolderAdap
         private final TextView textRecipeModification;
         private final TextView textViewAuthor;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView){
             super(itemView);
             textRecipeName = itemView.findViewById(R.id.text_recipe_name);
             textRecipeDescription = itemView.findViewById(R.id.text_recipe_description);
@@ -93,6 +99,21 @@ public class RecipieHolderAdapter extends RecyclerView.Adapter<RecipieHolderAdap
             textRecipeDates = itemView.findViewById(R.id.text_recipe_dates);
             textRecipeModification = itemView.findViewById(R.id.text_recipe_modification);
             textViewAuthor = itemView.findViewById(R.id.text_recipe_author);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+            LayoutInflater inflater = LayoutInflater.from(v.getContext());
+            View dialogView = inflater.inflate(R.layout.dialog_recipe_image,null, false);
+            builder.setView(dialogView);
+
+            Glide.with(v.getContext())
+                    .load(filteredRecipeData.get(getAdapterPosition()).getRecipe_image())
+                    .into((PhotoView) dialogView.findViewById(R.id.recipe_image));
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
     }
 }
