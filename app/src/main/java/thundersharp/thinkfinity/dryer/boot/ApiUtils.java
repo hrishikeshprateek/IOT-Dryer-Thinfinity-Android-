@@ -1,41 +1,39 @@
 package thundersharp.thinkfinity.dryer.boot;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.util.List;
 
 public class ApiUtils {
 
-    private static ApiUtils instance;
+    private static WeakReference<ApiUtils> instance;
     private RequestQueue requestQueue;
-    private static Context ctx;
+    private static WeakReference<Context> ctx;
 
     private ApiUtils(Context context) {
-        ctx = context;
+        ctx = new WeakReference<>(context);
         requestQueue = getRequestQueue();
     }
 
     public static synchronized ApiUtils getInstance(Context context) {
         if (instance == null) {
-            instance = new ApiUtils(context);
+            instance = new WeakReference<>(new ApiUtils(context));
         }
-        return instance;
+        return instance.get();
     }
 
     public RequestQueue getRequestQueue() {
         if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(ctx.getApplicationContext());
+            requestQueue = Volley.newRequestQueue(ctx.get().getApplicationContext());
         }
         return requestQueue;
     }
@@ -52,12 +50,7 @@ public class ApiUtils {
                         callback.onError(e.getMessage());
                     }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        callback.onError(error.getMessage());
-                    }
-                });
+                error -> callback.onError(error.getMessage()));
         getRequestQueue().add(jsonObjectRequest);
     }
 

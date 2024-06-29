@@ -61,9 +61,9 @@ public class DeviceViwer extends RecyclerView.Adapter<DeviceViwer.ViewHolder> im
 
      class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView name, uuid, time, endsSub;
-        private AppCompatButton action;
-        private CardView cardColor;
+        private final TextView name, uuid, time, endsSub;
+        private final AppCompatButton action;
+        private final CardView cardColor;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
