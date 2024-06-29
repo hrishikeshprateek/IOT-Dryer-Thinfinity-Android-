@@ -1,18 +1,18 @@
 package thundersharp.thinkfinity.dryer.users.ui.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.boot.ApiUtils;
@@ -25,19 +25,20 @@ public class AllDevices extends Fragment {
 
     private RecyclerView recyclerView;
     private StorageHelper storageHelper;
+    ExecutorService executorService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_all_devices, container, false);
+        executorService = Executors.newCachedThreadPool();
         storageHelper = StorageHelper.getInstance(getContext()).initUserJWTDataStorage();
 
         recyclerView = view.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-        fetchDeviceData();
+        executorService.execute(this::fetchDeviceData);
 
         return view;
     }
@@ -49,13 +50,21 @@ public class AllDevices extends Fragment {
                 .fetchData(url, Device.class, new ApiUtils.ApiResponseCallback<List<Device>>() {
                     @Override
                     public void onSuccess(List<Device> result) {
-                        recyclerView.setAdapter(new DeviceViwer(result));
+                        requireActivity().runOnUiThread(() -> recyclerView.setAdapter(new DeviceViwer(result)));
                     }
 
                     @Override
                     public void onError(String errorMessage) {
-                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show());
                     }
                 });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (executorService != null) {
+            executorService.shutdown();
+        }
     }
 }

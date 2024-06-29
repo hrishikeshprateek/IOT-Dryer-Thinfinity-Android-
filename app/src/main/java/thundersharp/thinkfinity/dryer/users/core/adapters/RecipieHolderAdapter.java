@@ -7,80 +7,80 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import thundersharp.thinkfinity.dryer.R;
+import thundersharp.thinkfinity.dryer.users.core.model.PublicRecipe;
 
 public class RecipieHolderAdapter extends RecyclerView.Adapter<RecipieHolderAdapter.ViewHolder> {
 
-    JSONArray recipeData;
+    private List<PublicRecipe> recipeData;
 
-    public RecipieHolderAdapter(JSONArray recipeData) {
+    public RecipieHolderAdapter(List<PublicRecipe> recipeData) {
         this.recipeData = recipeData;
+    }
+
+    public void updateData(List<PublicRecipe> newRecipeData) {
+        this.recipeData = newRecipeData;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recipe_holder,parent,false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recipe_holder, parent, false);
+        return new ViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        try {
-            JSONObject recipe = recipeData.getJSONObject(position);
 
-            holder.text_recipe_name.setText(recipe.getString("recipe_name"));
-            holder.humidity.setText(recipe.getInt("recipe_humidity")+" %");
-            holder.temp.setText(recipe.getDouble("recipe_temperature")+" C");
-            holder.text_recipe_dates.setText(recipe.getString("created_at"));
-            holder.text_recipe_description.setText(recipe.getString("recipe_description"));
-            holder.time.setText(recipe.getDouble("recipe_time")+" Hrs");
-            holder.text_recipe_modification.setText(recipe.getString("updated_at"));
-            holder.textView_author.setText(recipe.getString("recipe_author"));
+            PublicRecipe recipe = recipeData.get(position);
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            holder.textRecipeName.setText(recipe.getRecipe_name());
+            holder.humidity.setText(recipe.getRecipe_humidity() + " %");
+            holder.temp.setText(recipe.getRecipe_temperature() + " C");
+            holder.textRecipeDates.setText(recipe.getCreated_at());
+            holder.textRecipeDescription.setText(recipe.getRecipe_description());
+            holder.time.setText(recipe.getRecipe_time() + " Hrs");
+            holder.textRecipeModification.setText(recipe.getUpdated_at());
+            holder.textViewAuthor.setText(recipe.getRecipe_author());
+
     }
 
     @Override
     public int getItemCount() {
-        return recipeData.length();
+        return recipeData.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView text_recipe_name;
-        private TextView text_recipe_description;
+        private TextView textRecipeName;
+        private TextView textRecipeDescription;
         private TextView temp;
         private TextView humidity;
         private TextView time;
-        private TextView text_recipe_dates;
-        private TextView text_recipe_modification;
-        private TextView textView_author;
-        private AppCompatButton edit;
-        private AppCompatButton send_to_device;
+        private TextView textRecipeDates;
+        private TextView textRecipeModification;
+        private TextView textViewAuthor;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            text_recipe_name = itemView.findViewById(R.id.text_recipe_name);
-            text_recipe_description = itemView.findViewById(R.id.text_recipe_description);
+            textRecipeName = itemView.findViewById(R.id.text_recipe_name);
+            textRecipeDescription = itemView.findViewById(R.id.text_recipe_description);
             temp = itemView.findViewById(R.id.temp);
             humidity = itemView.findViewById(R.id.humidity);
             time = itemView.findViewById(R.id.time);
-            text_recipe_dates = itemView.findViewById(R.id.text_recipe_dates);
-            text_recipe_modification = itemView.findViewById(R.id.text_recipe_modification);
-            edit = itemView.findViewById(R.id.edit);
-            send_to_device = itemView.findViewById(R.id.send_to_device);
-            textView_author = itemView.findViewById(R.id.text_recipe_author);
+            textRecipeDates = itemView.findViewById(R.id.text_recipe_dates);
+            textRecipeModification = itemView.findViewById(R.id.text_recipe_modification);
+            textViewAuthor = itemView.findViewById(R.id.text_recipe_author);
         }
     }
 }
