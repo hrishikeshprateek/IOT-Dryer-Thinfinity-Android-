@@ -26,19 +26,22 @@ import java.util.Locale;
 
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.Utils;
+import thundersharp.thinkfinity.dryer.boot.ui.ActivityIntro;
 import thundersharp.thinkfinity.dryer.boot.ui.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
+import thundersharp.thinkfinity.dryer.users.core.interfaces.onRestart;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.About;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.AllDevices;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.DeviceLogs;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.Devicedashboard;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.Recipies;
 
-public class UsersHome extends AppCompatActivity {
+public class UsersHome extends AppCompatActivity implements onRestart {
+
+    public static onRestart onRestart;
 
     private TabLayout tabLayout;
     public static ViewPager viewPager;
-
     private LinearLayout linearLayout;
     private ImageView dropDown;
     private TextToSpeech t1;
@@ -49,7 +52,7 @@ public class UsersHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users_home);
-
+        onRestart = this;
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -115,6 +118,14 @@ public class UsersHome extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Devices"));
 
         gettabs(0);
+    }
+
+    @Override
+    public void onRestartRequested() {
+        Intent intent = new Intent(getApplicationContext(), ActivityIntro.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

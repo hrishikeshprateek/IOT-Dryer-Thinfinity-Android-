@@ -38,7 +38,6 @@ public class ActivityIntro extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        System.out.println(userAuthData.toString());
         if (userAuthData.getUser_id() != null){
             startUserLevelAppBootup(userAuthData);
         }

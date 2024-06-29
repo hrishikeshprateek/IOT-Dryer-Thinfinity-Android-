@@ -85,6 +85,7 @@ public class MasterLogin extends AppCompatActivity {
 
     }
 
+
     private void startUserLevelAppBootup(UserAuthData userAuthData) {
         if (userAuthData.role == Roles.USER) Utils.startActivity(MasterLogin.this, UsersHome.class);
         else if (userAuthData.role == Roles.MANAGER) Utils.startActivity(MasterLogin.this, UserManager.class);

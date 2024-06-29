@@ -20,6 +20,7 @@ import java.util.List;
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.boot.DeviceConfig;
 import thundersharp.thinkfinity.dryer.boot.utils.TimeUtils;
+import thundersharp.thinkfinity.dryer.users.UsersHome;
 import thundersharp.thinkfinity.dryer.users.core.model.Device;
 
 public class DeviceViwer extends RecyclerView.Adapter<DeviceViwer.ViewHolder> implements Filterable {
@@ -89,7 +90,7 @@ public class DeviceViwer extends RecyclerView.Adapter<DeviceViwer.ViewHolder> im
                                 .getDeviceConfig(v.getContext())
                                 .initializeStorage()
                                 .setCurrentDevice(data.get(getAdapterPosition()));
-                        //Home.onRestart.onRestartRequested();
+                        UsersHome.onRestart.onRestartRequested();
                     })
                     .show();
 

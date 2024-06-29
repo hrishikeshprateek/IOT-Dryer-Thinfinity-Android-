@@ -21,7 +21,6 @@ import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.core.adapters.DeviceViwer;
 import thundersharp.thinkfinity.dryer.users.core.model.Device;
 
-
 public class AllDevices extends Fragment {
 
     private RecyclerView recyclerView;
