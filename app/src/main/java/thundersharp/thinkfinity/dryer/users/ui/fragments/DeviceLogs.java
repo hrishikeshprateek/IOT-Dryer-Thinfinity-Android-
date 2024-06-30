@@ -44,7 +44,8 @@ public class DeviceLogs extends Fragment {
 
         rec = view.findViewById(R.id.rec);
 
-        fetchData(view);
+        if (deviceConfig.getCurrentDevice() != null)
+            fetchData(view);
         return view;
     }
 

@@ -21,7 +21,7 @@
     <string name="updated_at_2023_04_07">Updated At: 2023-04-07</string>
     <string name="search_for_recipes_here">Search for recipes by name, author, temp, humid ...</string>
     <string name="status">Status</string>
-    <string name="recipe_time_elapsed">Recipe time elapsed</string>
+    <string name="recipe_time_elapsed">Subscription Timer</string>
     <string name="todo">TODO</string>
     <string name="temporary_recipe">Temporary Recipe</string>
     <string name="no_temp_recipe_foun">No Temp recipe found click here to add a new recipie for the device.</string>

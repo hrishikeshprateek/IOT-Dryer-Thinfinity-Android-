@@ -104,11 +104,12 @@
                             android:text="Device's Last boot time: "/>
 
                         <TextView
+                            android:id="@+id/boot_time"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:text="21st January 07:40:26PM"/>
+                            android:text="@string/dash"/>
 
                     </LinearLayout>
 
@@ -127,11 +128,12 @@
                             android:text="Last cooked recipe: "/>
 
                         <TextView
+                            android:id="@+id/cokked_rec"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:text="Vinay Kebab"/>
+                            android:text="@string/dash"/>
 
                     </LinearLayout>
 
@@ -150,11 +152,12 @@
                             android:text="Host (this) device's IP: "/>
 
                         <TextView
+                            android:id="@+id/ip"
                             android:layout_weight="1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
-                            android:text="192.168.139.90"/>
+                            android:text="@string/dash"/>
 
                     </LinearLayout>
 
@@ -237,7 +240,7 @@
                             android:background="#E1E1E1"
                             app:wlv_borderColor="#EAEAEA"
                             app:wlv_borderWidth="3dp"
-                            app:wlv_progressValue="40"
+                            app:wlv_progressValue="0"
                             app:wlv_round_rectangle="true"
                             app:wlv_shapeType="rectangle"
                             app:wlv_titleBottom="Temp (MAX 100)"
@@ -245,7 +248,7 @@
                             app:wlv_titleBottomSize="14sp"
                             app:wlv_titleBottomStrokeColor="#A11545"
                             app:wlv_titleBottomStrokeWidth="2dp"
-                            app:wlv_titleCenter="40 C"
+                            app:wlv_titleCenter="0 C"
                             app:wlv_titleCenterColor="@android:color/white"
                             app:wlv_titleCenterSize="20sp"
                             app:wlv_titleCenterStrokeColor="#8A8888"
@@ -272,7 +275,7 @@
                             android:background="#E1E1E1"
                             app:wlv_borderColor="#EAEAEA"
                             app:wlv_borderWidth="3dp"
-                            app:wlv_progressValue="60"
+                            app:wlv_progressValue="0"
                             app:wlv_round_rectangle="true"
                             app:wlv_shapeType="rectangle"
                             app:wlv_titleBottom="Humidity"
@@ -280,7 +283,7 @@
                             app:wlv_titleBottomSize="14sp"
                             app:wlv_titleBottomStrokeColor="#03A9F4"
                             app:wlv_titleBottomStrokeWidth="2dp"
-                            app:wlv_titleCenter="60 rh"
+                            app:wlv_titleCenter="0 rh"
                             app:wlv_titleCenterColor="@android:color/white"
                             app:wlv_titleCenterSize="20sp"
                             app:wlv_titleCenterStrokeColor="#8A8888"
@@ -307,12 +310,12 @@
                         android:text="@string/recipe_time_elapsed"/>
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progressIndicator"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:indeterminate="false"
                         app:trackThickness="8dp"
                         android:layout_marginTop="8dp"
-                        android:progress="40"
                         android:progressTint="#0A9D8F"
                         app:trackCornerRadius="10dp"/>
 
@@ -322,6 +325,7 @@
                         android:layout_marginTop="4dp"
                         android:orientation="horizontal">
                         <TextView
+                            android:id="@+id/elapsedTimeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
@@ -332,6 +336,7 @@
                             android:text="0 Hrs"/>
 
                         <TextView
+                            android:id="@+id/remainingTimeTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="14sp"
@@ -340,22 +345,8 @@
                             android:layout_alignParentEnd="true"
                             android:fontFamily="@font/calibri"
                             android:text="300 Hrs"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:fontFamily="@font/calibri"
-                            android:gravity="end"
-                            android:text="160 Hrs Completed"
-                            android:textColor="#000"
-                            android:textSize="14sp"
-                            tools:ignore="HardcodedText" />
-
                     </RelativeLayout>
-
                 </LinearLayout>
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -44,7 +44,7 @@ public class DeviceViwer extends RecyclerView.Adapter<DeviceViwer.ViewHolder> im
 
         holder.name.setText("Device Name: "+device.getDevice_name());
         holder.uuid.setText("Id: "+device.getId());
-        holder.time.setText("Activated On"+ TimeUtils.getTimeFromTimeStamp(device.getSubscriptionActivatedOn()));
+        holder.time.setText("Activated On: "+ TimeUtils.getTimeFromTimeStamp(device.getSubscriptionActivatedOn()));
         holder.endsSub.setText("Expires on: "+TimeUtils.getTimeFromTimeStamp(device.getSubscriptionActiveTill()));
 
         holder.cardColor.setCardBackgroundColor(Color.parseColor(device.isEnabled()? "#5185ff" : "#F44336"));

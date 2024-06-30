@@ -6,5 +6,5 @@
     <color name="logLevelWarning">#FFC107</color>
     <color name="logLevelDebug">#03A9F4</color>
     <color name="logLevelError">#F44336</color>
-    <color name="logLevelInfo">#4CAF50</color>
+    <color name="logLevelInfo">#03A9F4</color>
 </resources>
