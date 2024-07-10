@@ -378,7 +378,7 @@
                             android:orientation="vertical">
 
                             <androidx.cardview.widget.CardView
-                                android:id="@+id/alive"
+                                android:id="@+id/devices"
                                 android:layout_width="match_parent"
                                 android:layout_height="90dp"
                                 app:cardCornerRadius="9dp"
@@ -464,7 +464,7 @@
                             android:orientation="vertical">
 
                             <androidx.cardview.widget.CardView
-                                android:id="@+id/lectures"
+                                android:id="@+id/public_rec"
                                 android:layout_width="match_parent"
                                 android:layout_height="90dp"
                                 android:clickable="true"
@@ -520,6 +520,7 @@
                             android:orientation="vertical">
 
                             <androidx.cardview.widget.CardView
+                                android:id="@+id/jobsheet_history"
                                 android:layout_width="match_parent"
                                 android:layout_height="120dp"
                                 app:cardCornerRadius="9dp"

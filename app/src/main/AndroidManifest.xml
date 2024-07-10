@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -21,6 +22,13 @@
         android:theme="@style/Theme.ThinkfinityDryer"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity android:name=".boot.barcode.BarCodeScanner"
+            android:exported="false"
+            android:label="Scan n Login"/>
+        <activity
+            android:name=".users.ui.SettingsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_settings" />
         <activity
             android:name=".users.ui.support.SupportHome"
             android:exported="false" />

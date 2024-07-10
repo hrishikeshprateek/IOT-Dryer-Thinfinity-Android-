@@ -35,6 +35,7 @@ import java.util.Objects;
 
 import thundersharp.thinkfinity.dryer.JSONUtils;
 import thundersharp.thinkfinity.dryer.R;
+import thundersharp.thinkfinity.dryer.boot.ApiUtils;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.core.adapters.TicketAdapter;
@@ -50,7 +51,6 @@ public class SupportHome extends AppCompatActivity {
     private RecyclerView ticketsRecyclerView;
     private CircularProgressIndicator loadingSpinner;
     private List<Device> activeDeviceData = new ArrayList<>();
-    private List<SupportTicket> tickets = new ArrayList<>();
     private Map<String, Object> decodedToken;
     private RequestQueue requestQueue;
     private StorageHelper storageHelper;
@@ -66,7 +66,7 @@ public class SupportHome extends AppCompatActivity {
 
         Toast.makeText(this, "Token is "+token, Toast.LENGTH_SHORT).show();
         if (token == null) {
-            Toast.makeText(this, "Token is null "+token, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Token is null ", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -104,51 +104,42 @@ public class SupportHome extends AppCompatActivity {
 
     private void fetchDevices(String token) {
         String url = HOST_BASE_ADDR_WITH_PORT + "/api/v1/user/get/user/device/status/" + token;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                response -> {
-                    try {
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject deviceObject = response.getJSONObject(i);
-                            Device device = new Gson().fromJson(deviceObject.toString(), Device.class);
-                            activeDeviceData.add(device);
-                        }
-                        ArrayAdapter<Device> adapter = new ArrayAdapter<>(SupportHome.this, android.R.layout.simple_spinner_item, activeDeviceData);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        deviceSpinner.setAdapter(adapter);
-                    } catch (JSONException e) {
-                        Log.e("API Error", "Error parsing device data", e);
+        ApiUtils
+                .getInstance(this)
+                .fetchData(url, Device.class, new ApiUtils.ApiResponseCallback<List<Device>>() {
+                    @Override
+                    public void onSuccess(List<Device> result) {
+                        activeDeviceData.addAll(result);
                     }
-                },
-                error -> handleTokenExpiration()
-        );
-        requestQueue.add(jsonArrayRequest);
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        ThinkfinityUtils.createErrorMessage(SupportHome.this, errorMessage).show();
+                    }
+                });
     }
 
     private void fetchTickets(String token) {
         loadingSpinner.setVisibility(View.VISIBLE);
         String url = HOST_BASE_ADDR_WITH_PORT + "/api/v1/support/tickets/" + token;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                response -> {
-                    loadingSpinner.setVisibility(View.GONE);
-                    try {
-                        for (int i = 0; i < response.length(); i++) {
-                            JSONObject ticketObject = response.getJSONObject(i);
-                            SupportTicket ticket = new Gson().fromJson(ticketObject.toString(), SupportTicket.class);
-                            tickets.add(ticket);
-                        }
-                        TicketAdapter adapter = new TicketAdapter(tickets, SupportHome.this::showTicketDetails);
+
+        ApiUtils
+                .getInstance(this)
+                .fetchData(url, SupportTicket.class, new ApiUtils.ApiResponseCallback<List<SupportTicket>>() {
+                    @Override
+                    public void onSuccess(List<SupportTicket> result) {
+                        loadingSpinner.setVisibility(View.GONE);
+                        TicketAdapter adapter = new TicketAdapter(result, SupportHome.this::showTicketDetails);
                         ticketsRecyclerView.setLayoutManager(new LinearLayoutManager(SupportHome.this));
                         ticketsRecyclerView.setAdapter(adapter);
-                    } catch (JSONException e) {
-                        Toast.makeText(SupportHome.this, "Failed to fetch tickets", Toast.LENGTH_SHORT).show();
                     }
-                },
-                error -> {
-                    loadingSpinner.setVisibility(View.GONE);
-                    Log.e("API Error", "Error fetching tickets", error);
-                }
-        );
-        requestQueue.add(jsonArrayRequest);
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        loadingSpinner.setVisibility(View.GONE);
+                        ThinkfinityUtils.createErrorMessage(SupportHome.this,errorMessage).show();
+                    }
+                });
     }
 
     private void createSupportTicket(String token) {
@@ -190,11 +181,6 @@ public class SupportHome extends AppCompatActivity {
 
     private void showTicketDetails(SupportTicket ticket) {
         Toast.makeText(this, "The status of the current ticket " + ticket.getDeviceID() + " is " + ticket.getStatus(), Toast.LENGTH_SHORT).show();
-    }
-
-    private String jwtDecode(String token) {
-        // Implement your JWT decode logic here
-        return "{}";
     }
 
 }

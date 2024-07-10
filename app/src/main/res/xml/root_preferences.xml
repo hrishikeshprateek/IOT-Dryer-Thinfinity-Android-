@@ -1,0 +1,61 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:summary="Manage your general appearance and network settings here"
+        app:title="@string/messages_header">
+
+        <ListPreference
+            app:icon="@drawable/outline_format_size_24"
+            app:key="font_size"
+            app:title="@string/signature_title"
+            app:entries="@array/font_size_entries"
+            app:entryValues="@array/font_size_values"
+            android:defaultValue="14sp"
+            app:useSimpleSummaryProvider="true"/>
+
+        <ListPreference
+            app:icon="@drawable/outline_network_check_24"
+            app:defaultValue="reply"
+            app:entries="@array/reply_entries"
+            app:entryValues="@array/reply_values"
+            app:key="reply"
+            app:title="@string/reply_title"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:summary="Configuration settings related to device, auth, cache data."
+        app:title="@string/sync_header">
+
+        <SwitchPreferenceCompat
+            app:title="Enable config modification"
+            app:icon="@drawable/outline_mode_edit_24"
+            app:key="enable_config"/>
+
+        <Preference
+            app:key="dev_conf"
+            app:icon="@drawable/outline_layers_clear_24"
+            app:summary="Clear all the device related data stored by the app like the last selected device etc. with immediate effect."
+            app:title="@string/sync_title"
+            app:dependency="enable_config"/>
+
+        <Preference
+            app:key="auth_config"
+            app:icon="@drawable/outline_admin_panel_settings_24"
+            app:summary="Clear all the session's data, this action will log you out immediately."
+            app:title="Clear Auth config"
+            app:dependency="enable_config"/>
+
+
+        <Preference
+            app:key="clear_all"
+            app:icon="@drawable/outline_cleaning_services_24"
+            app:summary="Invalidate and clear and reset the entire device, auth and other configs and settings."
+            app:title="@string/sync_title"
+            app:dependency="enable_config"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

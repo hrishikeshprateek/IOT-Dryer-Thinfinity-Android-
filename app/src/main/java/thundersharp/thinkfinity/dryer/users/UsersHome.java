@@ -34,6 +34,7 @@ import thundersharp.thinkfinity.dryer.boot.ui.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.core.interfaces.onRestart;
 import thundersharp.thinkfinity.dryer.users.core.model.Device;
+import thundersharp.thinkfinity.dryer.users.ui.SettingsActivity;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.About;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.AllDevices;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.DeviceLogs;
@@ -115,6 +116,8 @@ public class UsersHome extends AppCompatActivity implements onRestart {
                             .setPositiveButton("OK",(r,i) -> r.dismiss())
                             .setCancelable(false)
                             .show();
+                }else if (menuItem.getItemId() == R.id.java) {
+                    startActivity(new Intent(UsersHome.this, SettingsActivity.class));
                 }
                 return true;
             });

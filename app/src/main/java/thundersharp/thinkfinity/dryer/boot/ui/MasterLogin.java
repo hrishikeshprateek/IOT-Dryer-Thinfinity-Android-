@@ -15,6 +15,7 @@ import thundersharp.thinkfinity.dryer.JSONUtils;
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.Utils;
 import thundersharp.thinkfinity.dryer.boot.Enums.Roles;
+import thundersharp.thinkfinity.dryer.boot.barcode.BarCodeScanner;
 import thundersharp.thinkfinity.dryer.boot.helpers.AuthHelper;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.interfaces.OnAuthEvent;
@@ -38,6 +39,10 @@ public class MasterLogin extends AppCompatActivity {
 
         findViewById(R.id.checkServerL).setOnClickListener((r) -> {
             Utils.performServerCheck(this);
+        });
+
+        findViewById(R.id.emaillogin).setOnClickListener((r) -> {
+            startActivity(new Intent(this, BarCodeScanner.class));
         });
 
         username = findViewById(R.id.email);

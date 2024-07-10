@@ -202,11 +202,11 @@
                     android:drawablePadding="-30dp"
                     android:fontFamily="@font/calibri"
                     android:gravity="center"
-                    android:text="@string/get_a_new_device_now"
+                    android:text="@string/login_with_scanner"
                     android:textColor="#252525"
                     android:textSize="18sp"
-                    app:drawableTint="#252525"
-                    app:drawableStartCompat="@drawable/outline_developer_board_24" />
+                    app:drawableStartCompat="@drawable/outline_developer_board_24"
+                    app:drawableTint="#252525" />
 
 
             </LinearLayout>

@@ -36,4 +36,33 @@
     <string name="dash">--</string>
     <string name="shows_current_status_and_info_of_the_selected_device_please_update_this_description_section_later_before_deploying_this_project">Shows current status and info of the selected device, please update this description section later before deploying this project.</string>
     <string name="w">W</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">General</string>
+    <string name="sync_header">Storage Configs</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Logs font size</string>
+    <string name="reply_title">Network optimization</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Clear device configuration</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="login_with_scanner">Login with Scanner</string>
+
+    <string-array name="font_size_entries">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
+
+    <string-array name="font_size_values">
+        <item>12sp</item>
+        <item>14sp</item>
+        <item>16sp</item>
+    </string-array>
 </resources>
