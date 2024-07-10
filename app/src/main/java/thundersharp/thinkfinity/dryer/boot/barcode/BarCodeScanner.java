@@ -9,25 +9,40 @@ import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.UserManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.Map;
 
+import thundersharp.thinkfinity.dryer.JSONUtils;
 import thundersharp.thinkfinity.dryer.R;
+import thundersharp.thinkfinity.dryer.Utils;
+import thundersharp.thinkfinity.dryer.boot.Enums.Roles;
+import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
+import thundersharp.thinkfinity.dryer.boot.models.UserAuthData;
+import thundersharp.thinkfinity.dryer.boot.ui.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
+import thundersharp.thinkfinity.dryer.oem.OemHome;
+import thundersharp.thinkfinity.dryer.users.UsersHome;
 
 
 public class BarCodeScanner extends AppCompatActivity {
@@ -40,12 +55,11 @@ public class BarCodeScanner extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION = 201;
     private ImageView flashLight;
     private boolean dialog = true;
-
     private String scanValue = null;
-
     private CameraManager mCameraManager;
     private String mCameraId;
     private androidx.appcompat.app.AlertDialog alertDialog;
+    private UserAuthData userAuthData;
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -53,6 +67,7 @@ public class BarCodeScanner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_code_scanner);
+
         isFlashAvailable = getApplicationContext().getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
 
@@ -60,26 +75,24 @@ public class BarCodeScanner extends AppCompatActivity {
         flashLight = findViewById(R.id.flash_toogle);
         alertDialog = ThinkfinityUtils.createDefaultProgressBar(this);
 
+        mCameraManager = (CameraManager) getSystemService(CAMERA_SERVICE);
 
+        try {
+            mCameraId = mCameraManager.getCameraIdList()[0];
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
 
         flashLight.setOnClickListener(i -> {
-            if (flashStatus) {
-                flashLight.setImageDrawable(getDrawable(R.drawable.outline_flashlight_on_24));
-                //toggleFlash(false);
-                flashStatus = false;
-            } else {
-                flashLight.setImageDrawable(getDrawable(R.drawable.outline_flashlight_off_24));
-                // toggleFlash(true);
-                flashStatus = true;
-            }
+            //toggleFlash(!flashStatus);
         });
-        //initialiseDetectorsAndSources();
-
     }
 
     public void toggleFlash(boolean status) {
         try {
             mCameraManager.setTorchMode(mCameraId, status);
+            flashStatus = status;
+            flashLight.setImageDrawable(getDrawable(status ? R.drawable.outline_flashlight_off_24 : R.drawable.outline_flashlight_on_24));
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -94,7 +107,6 @@ public class BarCodeScanner extends AppCompatActivity {
                 .setRequestedPreviewSize(300, 300)
                 .setAutoFocusEnabled(true)
                 .build();
-
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -122,43 +134,71 @@ public class BarCodeScanner extends AppCompatActivity {
             }
         });
 
-
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
-                //Toast.makeText(getApplicationContext(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "To prevent memory leaks barcode scanner has been stopped", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void receiveDetections(@NonNull Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() != 0) {
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (dialog) {
-                                dialog = false;
-                                alertDialog.show();
-                                scanValue = barcodes.valueAt(0).displayValue;
-                                if (scanValue.startsWith("https://spekteraigs.page.link/QR/")) {
-                                    new AlertDialog.Builder(BarCodeScanner.this)
-                                            .setMessage(scanValue)
-                                            .setPositiveButton("OK", ((dialogInterface, i) -> {
-                                                alertDialog.dismiss();
-                                                dialog = true;
-                                            })).setCancelable(false)
-                                            .show();
+                    new Handler(Looper.getMainLooper()).post(() -> {
+                        if (dialog) {
+                            dialog = false;
+                            alertDialog.show();
+                            scanValue = barcodes.valueAt(0).displayValue;
+                            try {
+                                String url = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT +"/api/v1/user/get/profile/"+scanValue;
 
-                                } else {
-                                    new AlertDialog.Builder(BarCodeScanner.this)
-                                            .setMessage("Not a valid Spekter events QR Code!!")
-                                            .setPositiveButton("OK", ((dialogInterface, i) -> {
-                                                alertDialog.dismiss();
-                                                dialog = true;
-                                            })).setCancelable(false)
-                                            .show();
-                                }
+                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                                        response -> {
+                                            try {
+                                                boolean success = response.getBoolean("success");
+                                                if (!success){
+                                                    showUnDismissibleDialog(response.getString("message"));
+                                                }else {
+                                                    new AlertDialog.Builder(BarCodeScanner.this)
+                                                            .setTitle("Confirm link ?")
+                                                            .setMessage("Confirm link of account with email: "+response.getJSONObject("data").getString("email")+  " and Name: "+response.getJSONObject("data").getString("name"))
+                                                            .setCancelable(false)
+                                                            .setNegativeButton("NO", (r,e) ->{
+                                                                dialog = true;
+                                                                r.dismiss();
+                                                            })
+                                                            .setPositiveButton("LINK", (e,i)->{
+                                                                Map<String, Object> claims = JSONUtils.extractClaimsFromToken(scanValue);
 
+                                                                StorageHelper storageHelper = StorageHelper
+                                                                        .getInstance(BarCodeScanner.this)
+                                                                        .initUserJWTDataStorage();
+
+                                                                storageHelper.storeJWTData(claims);
+                                                                storageHelper.saveRawToken(scanValue);
+
+                                                                userAuthData = StorageHelper
+                                                                        .getInstance(BarCodeScanner.this)
+                                                                        .initUserJWTDataStorage()
+                                                                        .getStoredJWTData();
+
+                                                                startUserLevelAppBootup(userAuthData);
+                                                            })
+                                                            .show();
+                                                }
+                                                alertDialog.dismiss();
+
+                                            } catch (Exception e) {
+                                                showUnDismissibleDialog(e.getMessage());
+                                            }
+                                        },
+                                        error -> showUnDismissibleDialog(error.getMessage()));
+
+                                Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+
+                            }catch (Exception e){
+                                showUnDismissibleDialog(e.getMessage());
+                                e.printStackTrace();
                             }
                         }
                     });
@@ -169,13 +209,31 @@ public class BarCodeScanner extends AppCompatActivity {
         });
     }
 
+    private void startUserLevelAppBootup(UserAuthData userAuthData) {
+        if (userAuthData.role == Roles.USER) Utils.startActivity(BarCodeScanner.this, UsersHome.class);
+        else if (userAuthData.role == Roles.MANAGER) Utils.startActivity(BarCodeScanner.this, UserManager.class);
+        else if (userAuthData.role == Roles.OEM) Utils.startActivity(BarCodeScanner.this, OemHome.class);
+        finish();
+    }
+
+    void showUnDismissibleDialog(String message){
+        new AlertDialog.Builder(BarCodeScanner.this)
+                .setMessage(message)
+                .setPositiveButton("OK", ((dialogInterface, i) -> {
+                    alertDialog.dismiss();
+                    dialog = true;
+                })).setCancelable(false)
+                .show();
+
+    }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     protected void onPause() {
         super.onPause();
-        flashStatus = false;
-        flashLight.setImageDrawable(getDrawable(R.drawable.outline_flashlight_off_24));
+        if (flashStatus) {
+            //toggleFlash(false);
+        }
         cameraSource.release();
     }
 
