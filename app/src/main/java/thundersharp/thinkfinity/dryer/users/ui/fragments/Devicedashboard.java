@@ -56,7 +56,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
     private SSEClient sseClient;
     private StorageHelper storageHelper;
     private Device deviceConfig;
-    private TextView ip,boot_time, cooked_rec;
+    private TextView ip,boot_time, cooked_rec, act_inact;
     private LinearProgressIndicator progressIndicator;
     private TextView elapsedTimeTextView;
     private TextView remainingTimeTextView;
@@ -74,6 +74,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
 
         boot_time = view.findViewById(R.id.boot_time);
         cooked_rec = view.findViewById(R.id.cokked_rec);
+        act_inact = view.findViewById(R.id.act_inact);
 
         temperature = view.findViewById(R.id.stallsVisited);
         humidity = view.findViewById(R.id.projectsReviwed);
@@ -209,6 +210,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
                                 ((TextView) view.findViewById(R.id.public_recipes)).setText(String.valueOf(result.getPublicRecipeCount()));
                                 ((TextView) view.findViewById(R.id.private_recipes)).setText(String.valueOf(result.getPrivateRecipesCount()));
                                 ((TextView) view.findViewById(R.id.jobsheet_hist)).setText(String.valueOf(result.getJobSheetCount()));
+                                act_inact.setText(String.format(Locale.US,"%d/%d", result.getActiveDeviceCount(), result.getInactiveDeviceCount()));
                             });
                         }
 

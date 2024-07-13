@@ -1,6 +1,7 @@
 package thundersharp.thinkfinity.dryer.boot;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -11,7 +12,11 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 
 public class ApiUtils {
 
@@ -68,6 +73,30 @@ public class ApiUtils {
                     }
                 },
                 error -> callback.onError(error.getMessage()));
+
+        getRequestQueue().add(jsonObjectRequest);
+    }
+
+    public <T> void fetchDataWithAuthHeaderToken(String url, Class<T> modelClass, final ApiResponseCallback<List<T>> callback) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        Gson gson = new Gson();
+                        Type type = TypeToken.getParameterized(List.class, modelClass).getType();
+                        List<T> list = gson.fromJson(response.getJSONArray("data").toString(), type);
+                        callback.onSuccess(list);
+                    } catch (Exception e) {
+                        callback.onError(e.getMessage());
+                    }
+                },
+                error -> callback.onError(error.getMessage())) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("auth", StorageHelper.getInstance(ctx).initUserJWTDataStorage().getRawToken());
+                return headers;
+            }
+        };
 
         getRequestQueue().add(jsonObjectRequest);
     }
