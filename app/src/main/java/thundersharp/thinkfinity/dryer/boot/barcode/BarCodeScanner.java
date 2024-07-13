@@ -15,6 +15,7 @@ import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,21 +29,23 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Map;
 
+import thundersharp.thinkfinity.dryer.BuildConfig;
 import thundersharp.thinkfinity.dryer.JSONUtils;
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.Utils;
+import thundersharp.thinkfinity.dryer.boot.Enums.BootMode;
 import thundersharp.thinkfinity.dryer.boot.Enums.Roles;
+import thundersharp.thinkfinity.dryer.boot.KeyHelper;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.models.UserAuthData;
-import thundersharp.thinkfinity.dryer.boot.ui.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.oem.OemHome;
 import thundersharp.thinkfinity.dryer.users.UsersHome;
+
 
 
 public class BarCodeScanner extends AppCompatActivity {
@@ -55,11 +58,11 @@ public class BarCodeScanner extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION = 201;
     private ImageView flashLight;
     private boolean dialog = true;
-    private String scanValue = null;
     private CameraManager mCameraManager;
     private String mCameraId;
     private androidx.appcompat.app.AlertDialog alertDialog;
     private UserAuthData userAuthData;
+    private @BootMode int bootMode;
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -67,6 +70,7 @@ public class BarCodeScanner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bar_code_scanner);
+        bootMode = getIntent().getIntExtra(ThinkfinityUtils.BOOT_MODE_FOR_SCANNER, BootMode.BOOT_FOR_PASSWORD_LESS_AUTH);
 
         isFlashAvailable = getApplicationContext().getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
@@ -86,6 +90,11 @@ public class BarCodeScanner extends AppCompatActivity {
         flashLight.setOnClickListener(i -> {
             //toggleFlash(!flashStatus);
         });
+
+        if (bootMode == BootMode.BOOT_FOR_DEVICE_CHANGE){
+            ((TextView)findViewById(R.id.tittle)).setText("Change your device");
+            ((TextView)findViewById(R.id.desc)).setText("Change your current selected device here point to your device to change.");
+        }
     }
 
     public void toggleFlash(boolean status) {
@@ -98,7 +107,7 @@ public class BarCodeScanner extends AppCompatActivity {
         }
     }
 
-    private void initialiseDetectorsAndSources() {
+    private void initialiseDetectorsAndSources(int bootMode) {
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.QR_CODE)
                 .build();
@@ -148,58 +157,30 @@ public class BarCodeScanner extends AppCompatActivity {
                         if (dialog) {
                             dialog = false;
                             alertDialog.show();
-                            scanValue = barcodes.valueAt(0).displayValue;
-                            try {
-                                String url = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT +"/api/v1/user/get/profile/"+scanValue;
+                            String scanValue = barcodes.valueAt(0).displayValue;
 
-                                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                                        response -> {
-                                            try {
-                                                boolean success = response.getBoolean("success");
-                                                if (!success){
-                                                    showUnDismissibleDialog(response.getString("message"));
-                                                }else {
-                                                    new AlertDialog.Builder(BarCodeScanner.this)
-                                                            .setTitle("Confirm link ?")
-                                                            .setMessage("Confirm link of account with email: "+response.getJSONObject("data").getString("email")+  " and Name: "+response.getJSONObject("data").getString("name"))
-                                                            .setCancelable(false)
-                                                            .setNegativeButton("NO", (r,e) ->{
-                                                                dialog = true;
-                                                                r.dismiss();
-                                                            })
-                                                            .setPositiveButton("LINK", (e,i)->{
-                                                                Map<String, Object> claims = JSONUtils.extractClaimsFromToken(scanValue);
-
-                                                                StorageHelper storageHelper = StorageHelper
-                                                                        .getInstance(BarCodeScanner.this)
-                                                                        .initUserJWTDataStorage();
-
-                                                                storageHelper.storeJWTData(claims);
-                                                                storageHelper.saveRawToken(scanValue);
-
-                                                                userAuthData = StorageHelper
-                                                                        .getInstance(BarCodeScanner.this)
-                                                                        .initUserJWTDataStorage()
-                                                                        .getStoredJWTData();
-
-                                                                startUserLevelAppBootup(userAuthData);
-                                                            })
-                                                            .show();
-                                                }
+                            if (bootMode == BootMode.BOOT_FOR_PASSWORD_LESS_AUTH){
+                                performPasswordLessAuth(scanValue);
+                            } else if (bootMode == BootMode.BOOT_FOR_DEVICE_CHANGE) {
+                                try {
+                                    String deviceId = KeyHelper.decrypt(scanValue,  BuildConfig.MY_SECRET_KEY);
+                                    new AlertDialog.Builder(BarCodeScanner.this)
+                                            .setMessage(deviceId +" Decrypted from Qr")
+                                            .setPositiveButton("OK", (w, g)-> {
                                                 alertDialog.dismiss();
+                                                dialog = true;
+                                                w.dismiss();
+                                            })
+                                            .setCancelable(false)
+                                            .show();
+                                } catch (Exception e) {
+                                    ThinkfinityUtils.createErrorMessage(BarCodeScanner.this, e.getMessage()).show();
+                                    alertDialog.dismiss();
+                                    dialog = true;
+                                }
 
-                                            } catch (Exception e) {
-                                                showUnDismissibleDialog(e.getMessage());
-                                            }
-                                        },
-                                        error -> showUnDismissibleDialog(error.getMessage()));
-
-                                Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
-
-                            }catch (Exception e){
-                                showUnDismissibleDialog(e.getMessage());
-                                e.printStackTrace();
                             }
+
                         }
                     });
 
@@ -207,6 +188,62 @@ public class BarCodeScanner extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void performPasswordLessAuth(String scanValue){
+        try {
+            String url = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT +"/api/v1/user/get/profile/"+scanValue;
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                    response -> {
+                        try {
+                            boolean success = response.getBoolean("success");
+                            if (!success){
+                                showUnDismissibleDialog(response.getString("message").contains("expired") ?
+                                        "Session expired please refresh the QR code and try again !!" :
+                                        "Internal error please try again !");
+                            }else {
+                                new AlertDialog.Builder(BarCodeScanner.this)
+                                        .setTitle("Confirm link ?")
+                                        .setMessage("Confirm link of account with email: "+response.getJSONObject("data").getString("email")+  " and Name: "+response.getJSONObject("data").getString("name"))
+                                        .setCancelable(false)
+                                        .setNegativeButton("NO", (r,e) ->{
+                                            dialog = true;
+                                            r.dismiss();
+                                        })
+                                        .setPositiveButton("LINK", (e,i)->{
+                                            Map<String, Object> claims = JSONUtils.extractClaimsFromToken(scanValue);
+
+                                            StorageHelper storageHelper = StorageHelper
+                                                    .getInstance(BarCodeScanner.this)
+                                                    .initUserJWTDataStorage();
+
+                                            storageHelper.storeJWTData(claims);
+                                            storageHelper.saveRawToken(scanValue);
+
+                                            userAuthData = StorageHelper
+                                                    .getInstance(BarCodeScanner.this)
+                                                    .initUserJWTDataStorage()
+                                                    .getStoredJWTData();
+
+                                            startUserLevelAppBootup(userAuthData);
+                                        })
+                                        .show();
+                            }
+                            alertDialog.dismiss();
+
+                        } catch (Exception e) {
+                            showUnDismissibleDialog(e.getMessage());
+                        }
+                    },
+                    error -> showUnDismissibleDialog(error.getMessage()));
+
+            Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+
+        }catch (Exception e){
+            showUnDismissibleDialog("Invalid scan, Please point to a valid aqozone QR Code.");
+            e.printStackTrace();
+        }
     }
 
     private void startUserLevelAppBootup(UserAuthData userAuthData) {
@@ -240,6 +277,6 @@ public class BarCodeScanner extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initialiseDetectorsAndSources();
+        initialiseDetectorsAndSources(bootMode);
     }
 }

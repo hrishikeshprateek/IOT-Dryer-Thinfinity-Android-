@@ -103,7 +103,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
             totalDurationInMillis = deviceConfig.getSubscriptionActiveTill() - deviceConfig.getSubscriptionActivatedOn();
             currentTimeInMillis = System.currentTimeMillis() - deviceConfig.getSubscriptionActivatedOn();
 
-            ((CardView) view.findViewById(R.id.devices)).setOnClickListener(o -> viewPager.setCurrentItem(3));
+            ((CardView) view.findViewById(R.id.devices)).setOnClickListener(o -> viewPager.setCurrentItem(4));
             ((CardView) view.findViewById(R.id.public_rec)).setOnClickListener(o -> viewPager.setCurrentItem(1));
             ((CardView) view.findViewById(R.id.private_rec)).setOnClickListener(o -> viewPager.setCurrentItem(1));
 

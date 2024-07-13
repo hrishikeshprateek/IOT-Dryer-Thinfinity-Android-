@@ -27,6 +27,8 @@ import java.util.Locale;
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.Utils;
 import thundersharp.thinkfinity.dryer.boot.DeviceConfig;
+import thundersharp.thinkfinity.dryer.boot.Enums.BootMode;
+import thundersharp.thinkfinity.dryer.boot.barcode.BarCodeScanner;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.models.UserAuthData;
 import thundersharp.thinkfinity.dryer.boot.ui.ActivityIntro;
@@ -39,6 +41,7 @@ import thundersharp.thinkfinity.dryer.users.ui.fragments.About;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.AllDevices;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.DeviceLogs;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.Devicedashboard;
+import thundersharp.thinkfinity.dryer.users.ui.fragments.JobsheetRecord;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.Recipies;
 
 public class UsersHome extends AppCompatActivity implements onRestart {
@@ -63,6 +66,8 @@ public class UsersHome extends AppCompatActivity implements onRestart {
         viewPager = findViewById(R.id.viewPager);
         linearLayout = findViewById(R.id.container);
         dropDown = findViewById(R.id.dropdown_menu);
+        ImageView scanner = findViewById(R.id.scanner);
+
         set_device = findViewById(R.id.set_device);
         ping_server = findViewById(R.id.cPaye);
 
@@ -86,6 +91,8 @@ public class UsersHome extends AppCompatActivity implements onRestart {
         });
         setupTabs();
 
+        scanner.setOnClickListener(v -> startActivity(new Intent(this, BarCodeScanner.class).putExtra(ThinkfinityUtils.BOOT_MODE_FOR_SCANNER,
+                BootMode.BOOT_FOR_DEVICE_CHANGE)));
         ping_server.setOnClickListener(o -> Utils.performServerCheck(this));
 
         dropDown.setOnClickListener(o->{
@@ -128,11 +135,12 @@ public class UsersHome extends AppCompatActivity implements onRestart {
     }
 
     private synchronized void setupTabs() {
-        tabLayout.addTab(tabLayout.newTab().setText("Home"));
-        tabLayout.addTab(tabLayout.newTab().setText("Recent Activity"));
-        tabLayout.addTab(tabLayout.newTab().setText("Schedule"));
-        tabLayout.addTab(tabLayout.newTab().setText("Payload Logs"));
-        tabLayout.addTab(tabLayout.newTab().setText("Devices"));
+        tabLayout.addTab(tabLayout.newTab().setText("Dashboard"));
+        tabLayout.addTab(tabLayout.newTab().setText("Recipes"));
+        tabLayout.addTab(tabLayout.newTab().setText("Device Logs"));
+        tabLayout.addTab(tabLayout.newTab().setText("Job-sheet Record"));
+        tabLayout.addTab(tabLayout.newTab().setText("All Devices"));
+        tabLayout.addTab(tabLayout.newTab().setText("About"));
 
         gettabs(0);
     }
@@ -180,6 +188,7 @@ public class UsersHome extends AppCompatActivity implements onRestart {
         viewPagerAdapter.addFragment(new Devicedashboard(), "Dashboard");
         viewPagerAdapter.addFragment(new Recipies(), "Recipes");
         viewPagerAdapter.addFragment(new DeviceLogs(), "Device Logs");
+        viewPagerAdapter.addFragment(new JobsheetRecord(), "Job-sheet Record");
         viewPagerAdapter.addFragment(new AllDevices(), "All Devices");
         viewPagerAdapter.addFragment(new About(), "About");
 
@@ -202,12 +211,7 @@ public class UsersHome extends AppCompatActivity implements onRestart {
             }
         });
 
-        set_device.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(3);
-            }
-        });
+        set_device.setOnClickListener(v -> viewPager.setCurrentItem(4));
         if (pos != null)
             viewPager.setCurrentItem(pos);
     }

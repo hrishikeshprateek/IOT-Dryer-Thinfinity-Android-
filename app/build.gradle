@@ -13,7 +13,9 @@ android {
         versionCode 1
         versionName "1.0"
 
+        android.buildFeatures.buildConfig true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "MY_SECRET_KEY", "\"${MY_SECRET_KEY}\""
     }
 
     buildTypes {
@@ -44,10 +46,12 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     implementation 'com.github.firdausmaulan:GlideSlider:1.5.1'
     implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'org.bouncycastle:bcprov-jdk15to18:1.70'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.android.volley:volley:1.2.1'
     implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.security:security-crypto:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'

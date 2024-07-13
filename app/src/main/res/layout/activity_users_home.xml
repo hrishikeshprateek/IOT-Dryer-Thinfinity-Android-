@@ -27,6 +27,17 @@
             android:id="@+id/dropdown_menu"
             android:src="@drawable/ic_baseline_more_vert_24"/>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:elevation="7dp"
+            android:id="@+id/scanner"
+            android:layout_toStartOf="@id/dropdown_menu"
+            android:src="@drawable/baseline_qr_code_scanner_24"/>
+
+
 
         <RelativeLayout
             android:id="@+id/top_one"

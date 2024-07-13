@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/java"
-        android:title="Settings" />
+        android:title="@string/settings" />
 
     <item
         android:id="@+id/kotlin"
-        android:title="Disclaimer" />
+        android:title="@string/disclaimer" />
 
     <item
         android:id="@+id/android"
-        android:title="About us" />
+        android:title="@string/about_us" />
 
     <item
         android:id="@+id/react_native"
-        android:title="Log out" />
+        android:title="@string/log_out" />
 
 </menu>
