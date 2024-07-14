@@ -10,6 +10,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
@@ -17,12 +19,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.Utils;
@@ -211,8 +215,37 @@ public class UsersHome extends AppCompatActivity implements onRestart {
             }
         });
 
-        set_device.setOnClickListener(v -> viewPager.setCurrentItem(4));
+        set_device.setOnClickListener(v -> {
+            createDialog();
+            //viewPager.setCurrentItem(4);
+        });
         if (pos != null)
             viewPager.setCurrentItem(pos);
+    }
+
+    private void createDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View customLayout = getLayoutInflater().inflate(R.layout.dialog_change_device, null);
+        builder.setView(customLayout);
+
+        AppCompatButton btn_select = customLayout.findViewById(R.id.btn_select);
+        AppCompatButton btn_scan = customLayout.findViewById(R.id.btn_scan);
+
+        AlertDialog dialog = builder.create();
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        btn_scan.setOnClickListener(v -> {
+            startActivity(new Intent(this, BarCodeScanner.class).putExtra(ThinkfinityUtils.BOOT_MODE_FOR_SCANNER,
+                    BootMode.BOOT_FOR_DEVICE_CHANGE));
+            dialog.dismiss();
+        });
+
+        btn_select.setOnClickListener(v -> {
+            viewPager.setCurrentItem(4);
+            dialog.dismiss();
+        });
+
+
+        dialog.show();
     }
 }

@@ -38,6 +38,8 @@ import me.itangqi.waveloadingview.WaveLoadingView;
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.boot.ApiUtils;
 import thundersharp.thinkfinity.dryer.boot.DeviceConfig;
+import thundersharp.thinkfinity.dryer.boot.Enums.BootMode;
+import thundersharp.thinkfinity.dryer.boot.barcode.BarCodeScanner;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.boot.utils.TimeUtils;
@@ -88,7 +90,12 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
         if (deviceConfig == null){
             new AlertDialog.Builder(requireActivity())
                     .setMessage("No default device selected, select a device from the list first to proceed further. If your device is not shown up yet contact your manager !!")
-                    .setPositiveButton("SELECT", (e,r)-> viewPager.setCurrentItem(3))
+                    .setPositiveButton("SELECT", (e,r)-> viewPager.setCurrentItem(4))
+                    .setNegativeButton("SCAN",(r,t) -> {
+                        startActivity(new Intent(requireActivity(), BarCodeScanner.class).putExtra(ThinkfinityUtils.BOOT_MODE_FOR_SCANNER,
+                                BootMode.BOOT_FOR_DEVICE_CHANGE));
+                        r.dismiss();
+                    })
                     .setCancelable(false)
                     .create()
                     .show();

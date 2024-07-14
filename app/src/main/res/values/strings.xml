@@ -57,6 +57,7 @@
     <string name="disclaimer">Disclaimer</string>
     <string name="about_us">About us</string>
     <string name="log_out">Log out</string>
+    <string name="scan_qr">Scan QR</string>
 
     <string-array name="font_size_entries">
         <item>Small</item>

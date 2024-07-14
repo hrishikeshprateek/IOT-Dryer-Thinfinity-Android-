@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -28,7 +29,16 @@ public class JobsheetRecord extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_jobsheet_record, container, false);
 
         DeviceConfig deviceConfig = DeviceConfig.getDeviceConfig(requireActivity()).initializeStorage();
+        if (deviceConfig.getCurrentDevice() == null){
+            Toast.makeText(requireActivity(), "Select device first !!!", Toast.LENGTH_SHORT).show();
+        }else {
+            loadData(deviceConfig);
+        }
 
+        return view;
+    }
+
+    private void loadData(DeviceConfig deviceConfig){
         String url = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT+"/api/vi/device/get/all/jobSheetRecords/"+deviceConfig.getCurrentDevice().getId();
         ApiUtils
                 .getInstance(requireActivity())
@@ -36,7 +46,7 @@ public class JobsheetRecord extends Fragment {
                     @Override
                     public void onSuccess(List<JobSheetData> result) {
 
-                        ((RecyclerView) view.findViewById(R.id.recycler)).setAdapter(new JobsheetViewer(result));
+                        ((RecyclerView) requireActivity().findViewById(R.id.recycler_job)).setAdapter(new JobsheetViewer(result));
                     }
 
                     @Override
@@ -44,7 +54,5 @@ public class JobsheetRecord extends Fragment {
                         ThinkfinityUtils.createErrorMessage(getActivity(), errorMessage).show();
                     }
                 });
-
-        return view;
     }
 }

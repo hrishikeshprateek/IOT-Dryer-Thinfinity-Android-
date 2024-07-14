@@ -31,12 +31,15 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import thundersharp.thinkfinity.dryer.BuildConfig;
 import thundersharp.thinkfinity.dryer.JSONUtils;
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.Utils;
+import thundersharp.thinkfinity.dryer.boot.ApiUtils;
+import thundersharp.thinkfinity.dryer.boot.DeviceConfig;
 import thundersharp.thinkfinity.dryer.boot.Enums.BootMode;
 import thundersharp.thinkfinity.dryer.boot.Enums.Roles;
 import thundersharp.thinkfinity.dryer.boot.KeyHelper;
@@ -45,7 +48,8 @@ import thundersharp.thinkfinity.dryer.boot.models.UserAuthData;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.oem.OemHome;
 import thundersharp.thinkfinity.dryer.users.UsersHome;
-
+import thundersharp.thinkfinity.dryer.users.core.adapters.DeviceViwer;
+import thundersharp.thinkfinity.dryer.users.core.model.Device;
 
 
 public class BarCodeScanner extends AppCompatActivity {
@@ -63,6 +67,7 @@ public class BarCodeScanner extends AppCompatActivity {
     private androidx.appcompat.app.AlertDialog alertDialog;
     private UserAuthData userAuthData;
     private @BootMode int bootMode;
+    private boolean deviceFound = false;
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -164,15 +169,7 @@ public class BarCodeScanner extends AppCompatActivity {
                             } else if (bootMode == BootMode.BOOT_FOR_DEVICE_CHANGE) {
                                 try {
                                     String deviceId = KeyHelper.decrypt(scanValue,  BuildConfig.MY_SECRET_KEY);
-                                    new AlertDialog.Builder(BarCodeScanner.this)
-                                            .setMessage(deviceId +" Decrypted from Qr")
-                                            .setPositiveButton("OK", (w, g)-> {
-                                                alertDialog.dismiss();
-                                                dialog = true;
-                                                w.dismiss();
-                                            })
-                                            .setCancelable(false)
-                                            .show();
+                                    performDeviceChangeBoot(deviceId);
                                 } catch (Exception e) {
                                     ThinkfinityUtils.createErrorMessage(BarCodeScanner.this, e.getMessage()).show();
                                     alertDialog.dismiss();
@@ -188,6 +185,60 @@ public class BarCodeScanner extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private synchronized void performDeviceChangeBoot(String deviceId) {
+        StorageHelper storageHelper = StorageHelper.getInstance(BarCodeScanner.this).initUserJWTDataStorage();
+        String url = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT+ "/api/v1/user/get/user/device/status/" + storageHelper.getRawToken();
+
+
+        ApiUtils.getInstance(BarCodeScanner.this)
+                .fetchData(url, Device.class, new ApiUtils.ApiResponseCallback<List<Device>>() {
+                    @Override
+                    public void onSuccess(List<Device> result) {
+                        alertDialog.dismiss();
+                        for (Device device : result) {
+                            if (device.getId().equals(deviceId)) {
+                                deviceFound = true;
+                                new AlertDialog.Builder(BarCodeScanner.this)
+                                        .setMessage("Are you sure you want to change the active device ? This action requires a immediate restart for the changes to take affect !!")
+                                        .setCancelable(true)
+                                        .setTitle("Change to " + device.getDevice_name() + " with Id " + deviceId)
+                                        .setNegativeButton("NO", (r, s) -> {
+                                            r.dismiss();
+                                            dialog = true;
+                                        })
+                                        .setPositiveButton("CHANGE", (view, d) -> {
+                                            DeviceConfig
+                                                    .getDeviceConfig(BarCodeScanner.this)
+                                                    .initializeStorage()
+                                                    .setCurrentDevice(device);
+                                            UsersHome.onRestart.onRestartRequested();
+                                        }).setCancelable(false)
+                                        .show();
+                            }
+                        }
+
+                        if (!deviceFound) {
+                            new AlertDialog.Builder(BarCodeScanner.this)
+                                    .setMessage(deviceId + " Decrypted from Qr\nThis device is not registered for the current user.\nPlease try with other Device ID!")
+                                    .setPositiveButton("OK", (w, g) -> {
+                                        dialog = true;
+                                        w.dismiss();
+                                    })
+                                    .setCancelable(false)
+                                    .show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        ThinkfinityUtils.createErrorMessage(BarCodeScanner.this, errorMessage).show();
+                        alertDialog.dismiss();
+                        dialog = true;
+                    }
+                });
+
     }
 
     private void performPasswordLessAuth(String scanValue){

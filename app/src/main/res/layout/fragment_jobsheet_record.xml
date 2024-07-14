@@ -96,7 +96,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recycler"
+        android:id="@+id/recycler_job"
         android:layout_below="@+id/topCard"
         android:layout_marginTop="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
