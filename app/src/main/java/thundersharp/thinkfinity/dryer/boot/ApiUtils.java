@@ -11,8 +11,12 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +61,32 @@ public class ApiUtils {
                         Gson gson = new Gson();
                         Type type = TypeToken.getParameterized(List.class, modelClass).getType();
                         List<T> list = gson.fromJson(response.toString(), type);
+                        callback.onSuccess(list);
+                    } catch (Exception e) {
+                        callback.onError(e.getMessage());
+                    }
+                },
+                error -> callback.onError(error.getMessage()));
+
+        getRequestQueue().add(jsonObjectRequest);
+    }
+
+    public <T> void fetchDataWhenDataISObjectList(String url, Class<T> modelClass, final ApiResponseCallback<List<T>> callback) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject dataObject = response.getJSONObject("data");
+                        List<T> list = new ArrayList<>();
+
+                        Iterator<String> keys = dataObject.keys();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            JSONObject jsonObject = dataObject.getJSONObject(key);
+                            T item = gson.fromJson(jsonObject.toString(), modelClass);
+                            list.add(item);
+                        }
+
                         callback.onSuccess(list);
                     } catch (Exception e) {
                         callback.onError(e.getMessage());

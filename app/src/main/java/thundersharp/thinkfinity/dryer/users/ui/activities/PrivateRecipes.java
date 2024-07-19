@@ -1,33 +1,22 @@
-package thundersharp.thinkfinity.dryer.users.ui.fragments;
+package thundersharp.thinkfinity.dryer.users.ui.activities;
 
-import static android.app.Activity.RESULT_OK;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.agrawalsuneet.dotsloader.loaders.LazyLoader;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -40,13 +29,10 @@ import thundersharp.thinkfinity.dryer.boot.ApiUtils;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.serverStat.BootServerUtil;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
-import thundersharp.thinkfinity.dryer.users.core.SpringServerHelper;
 import thundersharp.thinkfinity.dryer.users.core.adapters.RecipieHolderAdapter;
-import thundersharp.thinkfinity.dryer.users.core.interfaces.OnServerEvents;
 import thundersharp.thinkfinity.dryer.users.core.model.PublicRecipe;
-import thundersharp.thinkfinity.dryer.users.ui.activities.PrivateRecipes;
 
-public class Recipies extends Fragment {
+public class PrivateRecipes extends AppCompatActivity {
 
     private EditText search_bar_edit_text;
     private ExecutorService executorService;
@@ -54,22 +40,21 @@ public class Recipies extends Fragment {
     private RecyclerView recyclerView;
     private StorageHelper storageHelper;
     private LazyLoader lazyLoader;
-    private RelativeLayout fab_private;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_recipies, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_private_recipes);
+
         executorService = Executors.newSingleThreadExecutor();
-        storageHelper = StorageHelper.getInstance(requireActivity()).initUserJWTDataStorage();
+        storageHelper = StorageHelper.getInstance(this).initUserJWTDataStorage();
 
-        recyclerView = view.findViewById(R.id.rec);
-        lazyLoader = view.findViewById(R.id.loader);
-        fab_private = view.findViewById(R.id.fab_private);
-        search_bar_edit_text = view.findViewById(R.id.search_bar_edit_text);
+        recyclerView = findViewById(R.id.recF);
+        lazyLoader = findViewById(R.id.loaderAS);
 
-        ImageButton search_bar_voice_icon = view.findViewById(R.id.search_bar_voice_icon);
+        search_bar_edit_text = findViewById(R.id.search_bar_edit_text);
+
+        ImageButton search_bar_voice_icon = findViewById(R.id.search_bar_voice_icon);
         search_bar_voice_icon.setOnClickListener(v -> {
 
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -80,23 +65,21 @@ public class Recipies extends Fragment {
             try {
                 startActivityForResult(intent, 1);
             } catch (Exception exception) {
-                Toast.makeText(view.getContext(), "EXCEPTION: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "EXCEPTION: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         });
 
-        fab_private.setOnClickListener(r -> startActivity(new Intent(requireActivity(), PrivateRecipes.class)));
-
         setupSearchBar();
-        fetchData(-1);
-        return view;
+        fetchData();
     }
-
 
     private void setupSearchBar() {
         search_bar_edit_text.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -108,22 +91,23 @@ public class Recipies extends Fragment {
         });
     }
 
-    private void fetchData(int count) {
+    private void fetchData() {
         lazyLoader.setVisibility(View.VISIBLE);
-        String url = BootServerUtil.baseUri+"api/v1/user/recipes/getAll/?count="+count+"&auth="+ storageHelper.getRawToken();
+        String url = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT+"/api/v1/private/recipes/getAll/"+ storageHelper.getRawToken();
         executorService.execute(() -> ApiUtils
-                .getInstance(requireContext())
-                .fetchData(url, PublicRecipe.class, new ApiUtils.ApiResponseCallback<List<PublicRecipe>>() {
+                .getInstance(this)
+                .fetchDataWhenDataISObjectList(url, PublicRecipe.class, new ApiUtils.ApiResponseCallback<List<PublicRecipe>>() {
                     @Override
                     public void onSuccess(List<PublicRecipe> result) {
                         adapter = new RecipieHolderAdapter(result);
                         recyclerView.setAdapter(adapter);
+
                         lazyLoader.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(String errorMessage) {
-                        ThinkfinityUtils.createErrorMessage(requireContext(), errorMessage).show();
+                        ThinkfinityUtils.createErrorMessage(PrivateRecipes.this, errorMessage).show();
                     }
                 }));
     }

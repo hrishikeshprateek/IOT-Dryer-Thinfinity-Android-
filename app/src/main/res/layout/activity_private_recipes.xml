@@ -9,7 +9,7 @@
     tools:context=".users.ui.fragments.Recipies">
 
     <com.agrawalsuneet.dotsloader.loaders.LazyLoader
-        android:id="@+id/loader"
+        android:id="@+id/loaderAS"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,14 +68,14 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:background="@null"
-                    android:contentDescription="@string/info_sending_ping_to_server_on_alive"
+                    android:contentDescription="@string/voice_search"
                     android:src="@drawable/ic_outline_keyboard_voice_24"
                     app:tint="#000" />
 
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rec"
+                android:id="@+id/recF"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/search_layout"
@@ -84,52 +84,8 @@
                 android:paddingBottom="170dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <RelativeLayout
-        android:id="@+id/fab_private"
-        android:layout_width="wrap_content"
-        android:minWidth="130dp"
-        android:elevation="5dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:nestedScrollingEnabled="false"
-        android:overScrollMode="never"
-        android:foreground="@drawable/ripple"
-        android:background="@drawable/rounded_square">
-
-        <LinearLayout
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="10dp"
-            tools:ignore="UseCompoundDrawables,UselessParent">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/outline_lock_24"
-                android:contentDescription="@string/todo" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/private_recipes"
-                android:fontFamily="@font/calibrib"
-                android:textSize="17sp"
-                android:textColor="#000"
-                android:layout_marginStart="5dp"
-                android:layout_gravity="center_vertical"/>
-
-        </LinearLayout>
-
-    </RelativeLayout>
 
 </RelativeLayout>

@@ -138,7 +138,7 @@ public class UsersHome extends AppCompatActivity implements onRestart {
         tabLayout.addTab(tabLayout.newTab().setText("Device Logs"));
         tabLayout.addTab(tabLayout.newTab().setText("Job-sheet Record"));
         tabLayout.addTab(tabLayout.newTab().setText("All Devices"));
-        tabLayout.addTab(tabLayout.newTab().setText("Profile"));
+        tabLayout.addTab(tabLayout.newTab().setText("About App"));
 
         gettabs(0);
     }
@@ -189,7 +189,7 @@ public class UsersHome extends AppCompatActivity implements onRestart {
         viewPagerAdapter.addFragment(new DeviceLogs(), "Device Logs");
         viewPagerAdapter.addFragment(new JobsheetRecord(), "Job-sheet Record");
         viewPagerAdapter.addFragment(new AllDevices(), "All Devices");
-        viewPagerAdapter.addFragment(new About(), "Profile");
+        viewPagerAdapter.addFragment(new About(), "About App");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
