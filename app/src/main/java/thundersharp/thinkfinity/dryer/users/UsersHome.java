@@ -39,7 +39,7 @@ import thundersharp.thinkfinity.dryer.boot.ui.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.core.interfaces.onRestart;
 import thundersharp.thinkfinity.dryer.users.core.model.Device;
-import thundersharp.thinkfinity.dryer.users.ui.ProfileActivity;
+import thundersharp.thinkfinity.dryer.users.ui.activities.ProfileActivity;
 import thundersharp.thinkfinity.dryer.users.ui.SettingsActivity;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.About;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.AllDevices;

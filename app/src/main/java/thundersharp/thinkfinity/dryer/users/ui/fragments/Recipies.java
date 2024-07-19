@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,6 +87,7 @@ public class Recipies extends Fragment {
         });
 
         fab_private.setOnClickListener(r -> startActivity(new Intent(requireActivity(), PrivateRecipes.class)));
+
 
         setupSearchBar();
         fetchData(-1);

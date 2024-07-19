@@ -59,6 +59,11 @@
     <string name="log_out">Log out</string>
     <string name="scan_qr">Scan QR</string>
     <string name="voice_search">Voice search</string>
+    <string name="jobsheets">Jobsheets</string>
+    <string name="your_address">Your Address</string>
+    <string name="support_center">Support Center</string>
+    <string name="manager">Manager</string>
+    <string name="update_data">Update Data</string>
 
     <string-array name="font_size_entries">
         <item>Small</item>

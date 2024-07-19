@@ -26,7 +26,7 @@
             android:name=".users.ui.activities.PrivateRecipes"
             android:exported="false" />
         <activity
-            android:name=".users.ui.ProfileActivity"
+            android:name=".users.ui.activities.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".boot.barcode.BarCodeScanner"

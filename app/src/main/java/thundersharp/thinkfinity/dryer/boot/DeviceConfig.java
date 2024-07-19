@@ -40,4 +40,10 @@ public class DeviceConfig {
     public DeviceConfig(WeakReference<Context> context) {
         this.context = context;
     }
+
+    public void clearConfig() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
 }

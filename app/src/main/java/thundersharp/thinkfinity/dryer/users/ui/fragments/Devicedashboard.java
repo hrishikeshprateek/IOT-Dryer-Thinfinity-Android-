@@ -44,11 +44,11 @@ import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.boot.utils.TimeUtils;
 
-import thundersharp.thinkfinity.dryer.users.UsersHome;
 import thundersharp.thinkfinity.dryer.users.core.helpers.SSEClient;
 import thundersharp.thinkfinity.dryer.users.core.model.Device;
 import thundersharp.thinkfinity.dryer.users.core.model.RealTimeDeviceSSEData;
 import thundersharp.thinkfinity.dryer.users.core.model.UserDashbordData;
+import thundersharp.thinkfinity.dryer.users.ui.activities.ProfileActivity;
 import thundersharp.thinkfinity.dryer.users.ui.support.SupportHome;
 
 public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
@@ -114,6 +114,8 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
             ((CardView) view.findViewById(R.id.devices)).setOnClickListener(o -> viewPager.setCurrentItem(4));
             ((CardView) view.findViewById(R.id.public_rec)).setOnClickListener(o -> viewPager.setCurrentItem(1));
             ((CardView) view.findViewById(R.id.private_rec)).setOnClickListener(o -> viewPager.setCurrentItem(1));
+
+            ((CardView) view.findViewById(R.id.cardPro)).setOnClickListener(p -> startActivity(new Intent(requireActivity(), ProfileActivity.class)));
 
             startTimer();
         }

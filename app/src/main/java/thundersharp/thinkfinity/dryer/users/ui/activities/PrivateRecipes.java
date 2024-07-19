@@ -2,6 +2,7 @@ package thundersharp.thinkfinity.dryer.users.ui.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -55,6 +56,7 @@ public class PrivateRecipes extends AppCompatActivity {
         search_bar_edit_text = findViewById(R.id.search_bar_edit_text);
 
         ImageButton search_bar_voice_icon = findViewById(R.id.search_bar_voice_icon);
+        ((Toolbar) findViewById(R.id.tool)).setNavigationOnClickListener(d -> finish());
         search_bar_voice_icon.setOnClickListener(v -> {
 
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);

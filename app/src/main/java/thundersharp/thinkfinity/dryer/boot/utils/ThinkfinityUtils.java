@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Objects;
 
 import thundersharp.thinkfinity.dryer.R;
+import thundersharp.thinkfinity.dryer.boot.DeviceConfig;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 
 public class ThinkfinityUtils {

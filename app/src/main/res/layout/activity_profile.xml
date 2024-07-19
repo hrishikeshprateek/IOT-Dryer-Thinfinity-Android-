@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".users.ui.ProfileActivity"
+    tools:context=".users.ui.activities.ProfileActivity"
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/black"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
             <androidx.appcompat.widget.Toolbar
@@ -59,7 +58,7 @@
                                 android:ellipsize="end"
                                 android:fontFamily="@font/allerta"
                                 android:maxLines="1"
-                                android:text="Hi, Hrishikesh Prateek"
+                                android:text="Hi,--"
                                 android:textAllCaps="false"
                                 android:textColor="#fff"
                                 android:textSize="22sp"
@@ -71,40 +70,36 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="3dp"
                                 android:fontFamily="@font/calibri"
-                                android:text="bombaydineuser@gmail.com"
+                                android:text="---"
+                                android:textStyle="bold"
                                 android:textAlignment="viewStart"
                                 android:textColor="#D1D1D1"
                                 android:textSize="15sp" />
 
                             <TextView
-                                android:id="@+id/updatedata"
+                                android:id="@+id/phone_no"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:text="Update data  >"
+                                android:text="Phone: ---"
                                 android:textAlignment="viewStart"
-                                android:textColor="#BF567A"
+                                android:textColor="#D1D1D1"
                                 android:textSize="13sp"
-                                android:textStyle="bold" />
+                                android:textStyle="normal" />
 
 
                         </LinearLayout>
 
-                        <TextView
+                        <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/profilepic"
                             android:layout_width="80dp"
                             android:layout_height="80dp"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="5dp"
                             android:layout_marginEnd="5dp"
-                            android:background="@drawable/circle_text_view_blue"
                             android:gravity="center"
-                            android:maxEms="1"
-                            android:text="HP"
-                            android:textAllCaps="false"
-                            android:textColor="#F3F3F3"
-                            android:textSize="29sp"
-                            android:textStyle="normal" />
+                            app:civ_border_width="2dp"
+                            app:civ_border_color="#ffffff"/>
 
                     </RelativeLayout>
 
@@ -131,20 +126,21 @@
                             app:cardUseCompatPadding="true">
 
                             <LinearLayout
+                                android:id="@+id/your_devices"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/wallet_balance"
+                                    android:id="@+id/text_your_devices"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
                                     android:ellipsize="end"
                                     android:gravity="center"
                                     android:maxLines="1"
-                                    android:text="\u20B9 0"
+                                    android:text="0"
                                     android:textColor="#BDBDBD"
                                     android:textSize="22sp"
                                     android:textStyle="bold" />
@@ -158,7 +154,7 @@
                                     android:ellipsize="end"
                                     android:gravity="center"
                                     android:maxLines="1"
-                                    android:text="Wallet Balance"
+                                    android:text="Your devices"
                                     android:textColor="#BDBDBD"
                                     android:textSize="13sp" />
 
@@ -178,28 +174,35 @@
                             app:cardUseCompatPadding="true">
 
                             <LinearLayout
+                                android:id="@+id/private_rec"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/orderNo"
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/text_private_rec"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
-                                    android:drawableStart="@drawable/ic_outline_architecture_24"
-                                    android:drawableTint="#BDBDBD"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="0"
+                                    android:textColor="#BDBDBD"
                                     android:textSize="22sp"
                                     android:textStyle="bold" />
 
                                 <TextView
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="5dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="10dp"
-                                    android:layout_marginHorizontal="5dp"
-                                    android:text="Your plans"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="Private Recipes"
                                     android:textColor="#BDBDBD"
                                     android:textSize="13sp" />
 
@@ -220,32 +223,39 @@
                             app:cardUseCompatPadding="true">
 
                             <LinearLayout
+                                android:id="@+id/jobsheets"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/rep"
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/text_jobsheets"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
-                                    android:drawableStart="@drawable/ic_baseline_person_pin_24"
-                                    android:drawableTint="#BDBDBD"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="0"
+                                    android:textColor="#BDBDBD"
                                     android:textSize="22sp"
                                     android:textStyle="bold" />
 
                                 <TextView
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="5dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="10dp"
-                                    android:text="Personal Data"
+                                    android:ellipsize="end"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:text="@string/jobsheets"
                                     android:textColor="#BDBDBD"
                                     android:textSize="13sp" />
 
                             </LinearLayout>
-
 
                         </com.google.android.material.card.MaterialCardView>
 
@@ -296,7 +306,6 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#1e2026"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:overScrollMode="never"
         >
@@ -335,14 +344,15 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_outline_sticky_note_2_24" />
+                            android:src="@drawable/ic_outline_tips_and_updates_24"
+                            android:contentDescription="@string/manager" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="5dp"
                             android:layout_marginTop="5dp"
-                            android:text="Notes"
+                            android:text="Acc Status"
                             android:textAlignment="center"
                             android:textColor="#000"
                             android:textSize="12sp" />
@@ -360,14 +370,14 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_outline_tips_and_updates_24" />
+                            android:src="@drawable/outline_manage_accounts_24" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="5dp"
                             android:layout_marginTop="5dp"
-                            android:text="Suggestions"
+                            android:text="Your Manager"
                             android:maxLines="1"
                             android:ellipsize="end"
                             android:textAlignment="center"
@@ -389,14 +399,15 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_baseline_money_off_24" />
+                            android:src="@drawable/round_mode_standby_24"
+                            android:contentDescription="@string/update_data" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="5dp"
                             android:layout_marginTop="5dp"
-                            android:text="Failed Txn"
+                            android:text="Update data"
                             android:textAlignment="center"
                             android:textColor="#000"
                             android:textSize="12sp" />
@@ -411,7 +422,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -423,7 +435,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="5dp"
                             android:layout_marginTop="5dp"
-                            android:text="Settings"
+                            android:text="App Settings"
                             android:textAlignment="center"
                             android:textColor="#000"
                             android:textSize="12sp" />
@@ -470,13 +482,16 @@
                             app:cardUseCompatPadding="true"
                             >
                             <LinearLayout
+                                android:id="@+id/address"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:elevation="7dp"
                                 android:background="@null"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:baselineAligned="false">
 
                                 <LinearLayout
+                                    android:id="@+id/address_cont"
                                     android:layout_width="0dp"
                                     android:layout_weight="4"
                                     android:layout_height="120dp"
@@ -491,7 +506,7 @@
                                         android:layout_marginHorizontal="10dp"
                                         android:layout_marginTop="10dp"
                                         app:tint="#04041B"
-                                        android:src="@drawable/ic_baseline_pending_actions_24" />
+                                        android:src="@drawable/outline_home_work_24" />
 
                                     <TextView
                                         android:layout_width="match_parent"
@@ -500,20 +515,22 @@
                                         android:layout_marginHorizontal="10dp"
                                         android:layout_marginTop="5dp"
                                         android:textStyle="bold"
-                                        android:text="Recent interactions"
+                                        android:text="@string/your_address"
                                         android:gravity="center"
                                         android:textColor="#000" />
 
                                     <TextView
+                                        android:id="@+id/text_address"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:layout_marginHorizontal="10dp"
                                         android:layout_marginTop="2dp"
-                                        android:textSize="13sp"
+                                        android:maxLines="4"
+                                        android:ellipsize="marquee"
                                         android:gravity="center"
                                         android:textColor="#616161"
-                                        android:text="View your recent interactions with the application, To get to your past destinations." />
+                                        android:text="--" />
 
 
 
@@ -590,7 +607,7 @@
                                     android:layout_marginHorizontal="10dp"
                                     android:layout_marginTop="10dp"
                                     android:layout_marginBottom="10dp"
-                                    android:src="@drawable/ic_outline_info_24"
+                                    android:src="@drawable/outline_contact_support_24"
                                     app:tint="#fff" />
 
                             </LinearLayout>
@@ -619,7 +636,7 @@
                                     android:layout_marginHorizontal="10dp"
                                     android:layout_marginTop="10dp"
                                     android:textStyle="bold"
-                                    android:text="Purchased Services"
+                                    android:text="@string/support_center"
                                     android:gravity="center"
                                     android:textColor="#000" />
 
@@ -629,10 +646,9 @@
                                     android:layout_gravity="center"
                                     android:layout_marginHorizontal="10dp"
                                     android:layout_marginTop="7dp"
-                                    android:textSize="13sp"
                                     android:gravity="center"
                                     android:textColor="#616161"
-                                    android:text="View All your purchased services " />
+                                    android:text="View All your active/solved cases" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"
@@ -661,7 +677,7 @@
                     android:background="@drawable/edittext_curved"
                     android:elevation="4dp"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="15dp">
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -671,7 +687,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#2B2C2E"
-                            android:fontFamily="sans-serif-smallcaps"
                             android:text="Rate us"
                             android:drawableStart="@drawable/ic_baseline_star_outline_24"
                             android:drawablePadding="10dp"
@@ -703,8 +718,7 @@
                         android:text="Click above to open play store and appreciate us by giving 5 Star ratings !"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="13sp"/>
+                        android:layout_marginBottom="10dp" />
 
 
                 </LinearLayout>
@@ -731,7 +745,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="#2B2C2E"
-                            android:fontFamily="sans-serif-smallcaps"
                             android:text="Logout"
                             android:drawableStart="@drawable/ic_baseline_logout_24"
                             android:drawablePadding="10dp"
@@ -763,8 +776,7 @@
                         android:text="Click above to logout from this device or to switch accounts !!"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="13sp"/>
+                        android:layout_marginBottom="10dp" />
 
 
                 </LinearLayout>
@@ -793,7 +805,6 @@
                             android:layout_marginStart="10dp"
                             android:drawableStart="@drawable/ic_outline_swap_horizontal_circle_24"
                             android:drawablePadding="10dp"
-                            android:fontFamily="sans-serif-smallcaps"
                             android:text="Switch Account"
                             android:textColor="#2B2C2E"
                             android:textSize="17sp"
@@ -822,8 +833,7 @@
                         android:text="If you are a Employee and want to switch to your account then click here."
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        android:textSize="13sp"/>
+                        android:layout_marginBottom="10dp" />
 
 
                 </LinearLayout>
