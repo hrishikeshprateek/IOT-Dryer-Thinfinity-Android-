@@ -4,6 +4,8 @@ import static thundersharp.thinkfinity.dryer.users.UsersHome.viewPager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -17,6 +19,16 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.request.RequestOptions;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.DefaultSliderView;
@@ -27,6 +39,7 @@ import org.json.JSONObject;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -48,6 +61,7 @@ import thundersharp.thinkfinity.dryer.users.core.helpers.SSEClient;
 import thundersharp.thinkfinity.dryer.users.core.model.Device;
 import thundersharp.thinkfinity.dryer.users.core.model.RealTimeDeviceSSEData;
 import thundersharp.thinkfinity.dryer.users.core.model.UserDashbordData;
+import thundersharp.thinkfinity.dryer.users.ui.activities.PrivateRecipes;
 import thundersharp.thinkfinity.dryer.users.ui.activities.ProfileActivity;
 import thundersharp.thinkfinity.dryer.users.ui.support.SupportHome;
 
@@ -64,6 +78,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
     private TextView remainingTimeTextView;
     private long totalDurationInMillis;
     private long currentTimeInMillis;
+    private PieChart chart;
 
     @SuppressLint("CheckResult")
     @Override
@@ -76,6 +91,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
 
         boot_time = view.findViewById(R.id.boot_time);
         cooked_rec = view.findViewById(R.id.cokked_rec);
+        chart = view.findViewById(R.id.pie_chart);
 
 
         temperature = view.findViewById(R.id.stallsVisited);
@@ -86,6 +102,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
         setupSlider(view);
         view.findViewById(R.id.support_center).setOnClickListener(t -> startActivity(new Intent(getActivity(), SupportHome.class)));
         syncData(view);
+        conFigChart();
 
         if (deviceConfig == null){
             new AlertDialog.Builder(requireActivity())
@@ -113,7 +130,8 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
 
             ((CardView) view.findViewById(R.id.devices)).setOnClickListener(o -> viewPager.setCurrentItem(4));
             ((CardView) view.findViewById(R.id.public_rec)).setOnClickListener(o -> viewPager.setCurrentItem(1));
-            ((CardView) view.findViewById(R.id.private_rec)).setOnClickListener(o -> viewPager.setCurrentItem(1));
+            ((CardView) view.findViewById(R.id.private_rec)).setOnClickListener(o -> startActivity(new Intent(requireActivity(), PrivateRecipes.class)));
+            ((CardView) view.findViewById(R.id.iniatives)).setOnClickListener(p -> viewPager.setCurrentItem(2));
 
             ((CardView) view.findViewById(R.id.cardPro)).setOnClickListener(p -> startActivity(new Intent(requireActivity(), ProfileActivity.class)));
 
@@ -215,7 +233,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
                         @Override
                         public void onSuccess(UserDashbordData result) {
                             requireActivity().runOnUiThread(() -> {
-
+                                setData(result.getActiveDeviceCount(), result.getInactiveDeviceCount()+1);
                             });
                         }
 
@@ -312,4 +330,94 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
         }
         return "";
     }
+
+    void conFigChart(){
+        chart.setUsePercentValues(true);
+        chart.getDescription().setEnabled(false);
+        chart.setExtraOffsets(5, 10, 5, 5);
+
+        chart.setDragDecelerationFrictionCoef(0.95f);
+
+        //chart.setCenterTextTypeface(tfLight);
+        //chart.setCenterText(generateCenterSpannableText());
+
+        chart.setDrawHoleEnabled(true);
+        chart.setHoleColor(Color.WHITE);
+
+        chart.setTransparentCircleColor(Color.WHITE);
+        chart.setTransparentCircleAlpha(110);
+
+        chart.setHoleRadius(60f);
+        chart.setTransparentCircleRadius(61f);
+
+        chart.setDrawCenterText(true);
+
+        chart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        chart.setRotationEnabled(true);
+        chart.setHighlightPerTapEnabled(true);
+
+        // chart.setUnit(" €");
+        // chart.setDrawUnitsInChart(true);
+
+        chart.animateY(1400, Easing.EaseInOutQuad);
+        // chart.spin(2000, 0, 360);
+
+        Legend l = chart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(0f);
+
+        // entry label styling
+        chart.setEntryLabelColor(Color.WHITE);
+        //chart.setEntryLabelTypeface(tfRegular);
+        chart.setEntryLabelTextSize(12f);
+
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void setData(int activeDevice, int inActiveDevice) {
+        ArrayList<PieEntry> entries = new ArrayList<>();
+
+        entries.add(new PieEntry(activeDevice,"Active Device"));
+        entries.add(new PieEntry(inActiveDevice, "In-Active Device"));
+
+        PieDataSet dataSet = new PieDataSet(entries, "Device Data");
+
+        dataSet.setDrawIcons(false);
+
+        dataSet.setSliceSpace(3f);
+        dataSet.setIconsOffset(new MPPointF(0, 40));
+        dataSet.setSelectionShift(5f);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors = new ArrayList<>();
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+
+        dataSet.setColors(colors);
+        //dataSet.setSelectionShift(0f);
+
+        PieData data = new PieData(dataSet);
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        chart.setCenterText((activeDevice+inActiveDevice)+"\nTotal Devices");
+        //data.setValueTypeface(tfLight);
+        chart.setData(data);
+
+        // undo all highlights
+        chart.highlightValues(null);
+
+        chart.invalidate();
+    }
+
+
 }

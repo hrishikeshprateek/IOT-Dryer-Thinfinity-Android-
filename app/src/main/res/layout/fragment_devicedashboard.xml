@@ -605,7 +605,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:minHeight="150dp"
                     app:cardCornerRadius="15dp"
                     android:layout_marginTop="15dp"
@@ -614,9 +614,11 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="150dp">
-
+                        android:layout_height="match_parent">
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/pie_chart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
