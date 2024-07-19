@@ -1,5 +1,6 @@
 package thundersharp.thinkfinity.dryer.users.ui.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,10 +21,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.boot.ApiUtils;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
+import thundersharp.thinkfinity.dryer.boot.ui.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
+import thundersharp.thinkfinity.dryer.users.UsersHome;
 import thundersharp.thinkfinity.dryer.users.core.model.UserDashbordData;
 import thundersharp.thinkfinity.dryer.users.core.model.UserProfileData;
 import thundersharp.thinkfinity.dryer.users.ui.SettingsActivity;
+import thundersharp.thinkfinity.dryer.users.ui.support.SupportHome;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -62,12 +66,27 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void setUI(UserProfileData result) {
         findViewById(R.id.settings).setOnClickListener(i -> startActivity(new Intent(this, SettingsActivity.class)));
+        findViewById(R.id.purchasedservice).setOnClickListener(y -> startActivity(new Intent(this, SupportHome.class)));
+        findViewById(R.id.switch_btn).setOnClickListener(u -> ThinkfinityUtils.createErrorMessage(this, "This feature is currently not available for your account !!").show());
+        findViewById(R.id.accountStat).setOnClickListener(t -> ThinkfinityUtils.createErrorMessage(this, "Your current account status is "+(result.isActive() ? "Healthy and active." : "Suspended contact your manager.")).show());
+        findViewById(R.id.logoutn).setOnClickListener(v -> new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Do you really want to logout from current device ??")
+                .setPositiveButton("LOGOUT",(r,i) -> {
+                    ThinkfinityUtils.signOut(this);
+                    finish();
+                })
+                .setNegativeButton("NO", (r,i) -> r.dismiss())
+                .setCancelable(false)
+                .show());
+
         profileName.setText(String.format("Hi, %s", result.getName()));
         profileEmail.setText(result.getEmail());
         ((TextView)findViewById(R.id.text_address)).setText(result.getAddress());
         ((TextView)findViewById(R.id.phone_no)).setText(String.format("Phone no: %s", result.getPhone()));
 
-        ((LinearLayout) findViewById(R.id.address)).setOnClickListener(i -> ThinkfinityUtils.createErrorMessage(this,"To Edit your address please contact your manager."));
+
+        ((LinearLayout) findViewById(R.id.address)).setOnClickListener(i -> ThinkfinityUtils.createErrorMessage(this,"To Edit your address please contact your manager.").show());
         Glide.with(this).load((result.getPhotoUrl() == null ||
                 result.getPhotoUrl().contains("https://example.com/")) ? Uri.parse("https://img.icons8.com/?size=100&id=20749&format=png&color=000000") :
                 Uri.parse(result.getPhotoUrl())).into(((CircleImageView) findViewById(R.id.profilepic)));
@@ -88,6 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
                                 ((TextView) findViewById(R.id.text_your_devices)).setText(String.valueOf(result.getYourDeviceCount()));
                                 ((TextView) findViewById(R.id.text_private_rec)).setText(String.valueOf(result.getPrivateRecipesCount()));
                                 ((TextView) findViewById(R.id.text_jobsheets)).setText(String.valueOf(result.getJobSheetCount()));
+                                ((TextView)findViewById(R.id.yourDevices)).setText(String.format(Locale.US,"%d", result.getPublicRecipeCount()));
                                 //((TextView) view.findViewById(R.id.jobsheet_hist)).setText(String.valueOf(result.getJobSheetCount()));
                             });
                         }

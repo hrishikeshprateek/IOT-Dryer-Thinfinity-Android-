@@ -306,8 +306,9 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#1e2026"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:overScrollMode="never"
+        android:overScrollMode="ifContentScrolls"
         >
 
         <RelativeLayout
@@ -334,18 +335,20 @@
                     android:weightSum="4">
 
                     <LinearLayout
-                        android:id="@+id/notes"
+                        android:id="@+id/accountStat"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_outline_tips_and_updates_24"
-                            android:contentDescription="@string/manager" />
+                            android:contentDescription="@string/manager"
+                            app:tint="#435ABE" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -428,6 +431,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            app:tint="#435ABE"
                             android:src="@drawable/ic_outline_admin_panel_settings_24" />
 
                         <TextView
@@ -526,8 +530,9 @@
                                         android:layout_gravity="center"
                                         android:layout_marginHorizontal="10dp"
                                         android:layout_marginTop="2dp"
+                                        android:layout_marginBottom="5dp"
                                         android:maxLines="4"
-                                        android:ellipsize="marquee"
+                                        android:ellipsize="end"
                                         android:gravity="center"
                                         android:textColor="#616161"
                                         android:text="--" />
@@ -546,29 +551,30 @@
                             android:orientation="vertical"
                             android:background="@drawable/curve_bg"
                             android:layout_marginStart="7dp"
+                            android:gravity="center"
                             android:layout_marginEnd="7dp"
-                            android:backgroundTint="#000045"
+                            android:backgroundTint="#3F51B5"
                             >
-                            <ImageView
+                            <TextView
+                                android:id="@+id/yourDevices"
+                                android:layout_above="@+id/descText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:tint="#fff"
-                                android:layout_marginTop="20dp"
-                                android:src="@drawable/ic_baseline_report_gmailerrorred_24"
-                                android:layout_gravity="center_horizontal"
-                                android:background="@drawable/button_curved_round"
-                                android:backgroundTint="#A3A8A8FF"
-                                android:padding="3dp"
-                                />
+                                android:layout_centerHorizontal="true"
+                                android:textColor="#ffffff"
+                                android:textSize="35sp"
+                                android:gravity="center"
+                                android:text="@string/dash"
+                                android:textStyle="bold"/>
 
                             <TextView
+                                android:id="@+id/descText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
                                 android:textAlignment="center"
-                                android:text="Report issue"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="7dp"
+                                android:text="Public Recipe count"
+                                android:layout_marginTop="5dp"
                                 android:textColor="#fff"
                                 android:textStyle="bold"
                                 />
@@ -648,7 +654,7 @@
                                     android:layout_marginTop="7dp"
                                     android:gravity="center"
                                     android:textColor="#616161"
-                                    android:text="View All your active/solved cases" />
+                                    android:text="View All your active/solved cases or create a new request." />
 
                                 <ImageView
                                     android:layout_width="wrap_content"
@@ -843,7 +849,7 @@
                     android:layout_below="@id/switchw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="25dp"
                     android:layout_marginBottom="60dp">
 
                     <TextView
