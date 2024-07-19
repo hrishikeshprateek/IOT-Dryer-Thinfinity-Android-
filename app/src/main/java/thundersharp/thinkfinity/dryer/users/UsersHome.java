@@ -1,13 +1,5 @@
 package thundersharp.thinkfinity.dryer.users;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,10 +8,17 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -40,6 +39,7 @@ import thundersharp.thinkfinity.dryer.boot.ui.MasterLogin;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.core.interfaces.onRestart;
 import thundersharp.thinkfinity.dryer.users.core.model.Device;
+import thundersharp.thinkfinity.dryer.users.ui.ProfileActivity;
 import thundersharp.thinkfinity.dryer.users.ui.SettingsActivity;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.About;
 import thundersharp.thinkfinity.dryer.users.ui.fragments.AllDevices;
@@ -54,10 +54,9 @@ public class UsersHome extends AppCompatActivity implements onRestart {
 
     private TabLayout tabLayout;
     public static ViewPager viewPager;
-    private LinearLayout linearLayout;
     private ImageView dropDown;
     private TextToSpeech t1;
-    private AppCompatButton set_device, ping_server;
+    private AppCompatButton set_device;
 
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @Override
@@ -68,12 +67,12 @@ public class UsersHome extends AppCompatActivity implements onRestart {
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
-        linearLayout = findViewById(R.id.container);
+
         dropDown = findViewById(R.id.dropdown_menu);
         ImageView scanner = findViewById(R.id.scanner);
 
         set_device = findViewById(R.id.set_device);
-        ping_server = findViewById(R.id.cPaye);
+        AppCompatButton ping_server = findViewById(R.id.cPaye);
 
         UserAuthData storageHelper = StorageHelper.getInstance(this).initUserJWTDataStorage().getStoredJWTData();
         Device deviceConfig = DeviceConfig.getDeviceConfig(this).initializeStorage().getCurrentDevice();
@@ -120,15 +119,10 @@ public class UsersHome extends AppCompatActivity implements onRestart {
                             .setCancelable(false)
                             .show();
 
-                } else if (menuItem.getItemId() == R.id.android) {
-                    new AlertDialog.Builder(UsersHome.this)
-                            .setTitle("About")
-                            .setView(R.layout.dialog_layout)
-                            .setPositiveButton("OK",(r,i) -> r.dismiss())
-                            .setCancelable(false)
-                            .show();
                 }else if (menuItem.getItemId() == R.id.java) {
                     startActivity(new Intent(UsersHome.this, SettingsActivity.class));
+                }else if (menuItem.getItemId() == R.id.android) {
+                    startActivity(new Intent(UsersHome.this, ProfileActivity.class));
                 }
                 return true;
             });
@@ -144,7 +138,7 @@ public class UsersHome extends AppCompatActivity implements onRestart {
         tabLayout.addTab(tabLayout.newTab().setText("Device Logs"));
         tabLayout.addTab(tabLayout.newTab().setText("Job-sheet Record"));
         tabLayout.addTab(tabLayout.newTab().setText("All Devices"));
-        tabLayout.addTab(tabLayout.newTab().setText("About"));
+        tabLayout.addTab(tabLayout.newTab().setText("Profile"));
 
         gettabs(0);
     }
@@ -157,7 +151,7 @@ public class UsersHome extends AppCompatActivity implements onRestart {
         finish();
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
+    static class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
@@ -165,6 +159,7 @@ public class UsersHome extends AppCompatActivity implements onRestart {
             super(manager);
         }
 
+        @NonNull
         @Override
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
@@ -194,7 +189,7 @@ public class UsersHome extends AppCompatActivity implements onRestart {
         viewPagerAdapter.addFragment(new DeviceLogs(), "Device Logs");
         viewPagerAdapter.addFragment(new JobsheetRecord(), "Job-sheet Record");
         viewPagerAdapter.addFragment(new AllDevices(), "All Devices");
-        viewPagerAdapter.addFragment(new About(), "About");
+        viewPagerAdapter.addFragment(new About(), "Profile");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

@@ -1,5 +1,6 @@
 package thundersharp.thinkfinity.dryer.users.ui.fragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.agrawalsuneet.dotsloader.loaders.LazyLoader;
 
 import org.json.JSONObject;
 
@@ -33,6 +36,7 @@ public class DeviceLogs extends Fragment {
     private StorageHelper storageHelper;
     private DeviceConfig deviceConfig;
     private RecyclerView rec;
+    private LazyLoader lazyLoader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,14 +47,16 @@ public class DeviceLogs extends Fragment {
         deviceConfig = DeviceConfig.getDeviceConfig(requireActivity()).initializeStorage();
 
         rec = view.findViewById(R.id.rec);
+        lazyLoader = view.findViewById(R.id.loaderA);
 
         if (deviceConfig.getCurrentDevice() != null)
-            fetchData(view);
+            executorService.execute(this::fetchData);
         return view;
     }
 
-    void fetchData(View view){
-        executorService.execute(() -> {
+    void fetchData(){
+        lazyLoader.setVisibility(View.VISIBLE);
+
             String url = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT+"/api/v1/logs/device/id/"+storageHelper.getRawToken()+"?deviceId="+deviceConfig.getCurrentDevice().getId();
             ApiUtils
                     .getInstance(requireActivity())
@@ -58,6 +64,7 @@ public class DeviceLogs extends Fragment {
                         @Override
                         public void onSuccess(List<LogModel> result) {
                             rec.setAdapter(new LogsViewer(result));
+                            requireActivity().runOnUiThread(() -> lazyLoader.setVisibility(View.GONE));
                         }
 
                         @Override
@@ -68,6 +75,5 @@ public class DeviceLogs extends Fragment {
                             });
                         }
                     });
-        });
     }
 }

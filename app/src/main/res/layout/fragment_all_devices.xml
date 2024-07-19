@@ -5,6 +5,26 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".users.ui.fragments.AllDevices">
+    <com.agrawalsuneet.dotsloader.loaders.LazyLoader
+        android:id="@+id/loaderD"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:lazyloader_animDur="800"
+        app:lazyloader_dotsDist="10dp"
+        app:lazyloader_dotsRadius="7dp"
+        app:lazyloader_firstDelayDur="150"
+        app:lazyloader_firstDotColor="#E91E63"
+        app:lazyloader_interpolator="@android:anim/decelerate_interpolator"
+        app:lazyloader_secondDelayDur="300"
+        android:layout_centerInParent="true"
+        app:lazyloader_secondDotColor="#009688"
+        app:lazyloader_thirdDotColor="#2196F3" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

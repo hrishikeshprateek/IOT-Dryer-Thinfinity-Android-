@@ -43,6 +43,13 @@ public class ApiUtils {
         return requestQueue;
     }
 
+    /**
+     *
+     * @param url
+     * @param modelClass
+     * @param callback
+     * @param <T>
+     */
     public <T> void fetchDataRawWithoutFormat(String url, Class<T> modelClass, final ApiResponseCallback<List<T>> callback) {
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {

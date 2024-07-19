@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.agrawalsuneet.dotsloader.loaders.LazyLoader;
+
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,6 +28,7 @@ public class AllDevices extends Fragment {
     private RecyclerView recyclerView;
     private StorageHelper storageHelper;
     ExecutorService executorService;
+    private LazyLoader lazyLoader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,8 +39,11 @@ public class AllDevices extends Fragment {
         storageHelper = StorageHelper.getInstance(getContext()).initUserJWTDataStorage();
 
         recyclerView = view.findViewById(R.id.recycler);
+        lazyLoader = view.findViewById(R.id.loaderD);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        lazyLoader.setVisibility(View.VISIBLE);
         executorService.execute(this::fetchDeviceData);
 
         return view;
@@ -51,6 +57,7 @@ public class AllDevices extends Fragment {
                     @Override
                     public void onSuccess(List<Device> result) {
                         recyclerView.setAdapter(new DeviceViwer(result));
+                        requireActivity().runOnUiThread(() -> lazyLoader.setVisibility(View.GONE));
                     }
 
                     @Override

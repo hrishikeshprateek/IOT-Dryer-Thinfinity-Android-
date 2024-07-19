@@ -12,7 +12,7 @@
 
     <item
         android:id="@+id/android"
-        android:title="@string/about_us" />
+        android:title="Profile" />
 
     <item
         android:id="@+id/react_native"

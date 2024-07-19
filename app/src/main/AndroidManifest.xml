@@ -22,10 +22,14 @@
         android:theme="@style/Theme.ThinkfinityDryer"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity android:name=".boot.barcode.BarCodeScanner"
+        <activity
+            android:name=".users.ui.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".boot.barcode.BarCodeScanner"
             android:exported="false"
-            android:screenOrientation="portrait"
-            android:label="Scan n Login"/>
+            android:label="Scan n Login"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".users.ui.SettingsActivity"
             android:exported="false"

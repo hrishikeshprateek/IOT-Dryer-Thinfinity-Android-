@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.agrawalsuneet.dotsloader.loaders.LazyLoader;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -50,6 +51,7 @@ public class Recipies extends Fragment {
     private RecipieHolderAdapter adapter;
     private RecyclerView recyclerView;
     private StorageHelper storageHelper;
+    private LazyLoader lazyLoader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +62,7 @@ public class Recipies extends Fragment {
         storageHelper = StorageHelper.getInstance(requireActivity()).initUserJWTDataStorage();
 
         recyclerView = view.findViewById(R.id.rec);
+        lazyLoader = view.findViewById(R.id.loader);
         search_bar_edit_text = view.findViewById(R.id.search_bar_edit_text);
 
         ImageButton search_bar_voice_icon = view.findViewById(R.id.search_bar_voice_icon);
@@ -100,6 +103,7 @@ public class Recipies extends Fragment {
     }
 
     private void fetchData(int count) {
+        lazyLoader.setVisibility(View.VISIBLE);
         String url = BootServerUtil.baseUri+"api/v1/user/recipes/getAll/?count="+count+"&auth="+ storageHelper.getRawToken();
         executorService.execute(() -> ApiUtils
                 .getInstance(requireContext())
@@ -108,6 +112,7 @@ public class Recipies extends Fragment {
                     public void onSuccess(List<PublicRecipe> result) {
                         adapter = new RecipieHolderAdapter(result);
                         recyclerView.setAdapter(adapter);
+                        lazyLoader.setVisibility(View.GONE);
                     }
 
                     @Override
