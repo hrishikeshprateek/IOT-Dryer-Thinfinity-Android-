@@ -169,6 +169,9 @@ public class FormFragment extends Fragment {
             return;
         }
 
+        List<String> time = new ArrayList<>();
+        time.add("Created");
+
         SupportTicket newSupportTicket = new SupportTicket(
                 (String) decodedToken.get(ThinkfinityUtils.USER_UID_JWT),
                 Objects.requireNonNull(customerName.getText()).toString(),
@@ -181,7 +184,8 @@ public class FormFragment extends Fragment {
                 supportTypeSpinner.getText().toString(),
                 Objects.requireNonNull(alternateContact.getText()).toString(),
                 Objects.requireNonNull(additionalDescription.getText()).toString(),
-                "Created"
+                "Created",
+                time
         );
 
         String url = HOST_BASE_ADDR_WITH_PORT + "/api/v1/support/new/create";

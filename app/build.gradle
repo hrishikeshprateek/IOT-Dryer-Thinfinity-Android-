@@ -48,6 +48,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.11.0'
     implementation 'org.bouncycastle:bcprov-jdk15to18:1.70'
     implementation 'com.agrawalsuneet.androidlibs:dotsloader:1.4'
+    implementation 'com.github.vipulasri:timelineview:1.0.6'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 

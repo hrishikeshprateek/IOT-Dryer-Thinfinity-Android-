@@ -2,7 +2,8 @@ package thundersharp.thinkfinity.dryer.users.core.model;
 
 import java.util.List;
 
-public class SupportTicket {
+public class SupportTicketServer {
+private String id;
     private String uid;
     private String name;
     private boolean isForOem;
@@ -17,9 +18,8 @@ public class SupportTicket {
     private String status;
     private List<String> timeline; // New field
 
-    public SupportTicket(String uid, String name, boolean isForOem, boolean checkDeviceLogs, String contact_no,
-                         long ticketTime, String deviceID, String supportTittle, String supportType,
-                         String alternateContact, String description, String status, List<String> timeline) {
+    public SupportTicketServer(String id, String uid, String name, boolean isForOem, boolean checkDeviceLogs, String contact_no, long ticketTime, String deviceID, String supportTittle, String supportType, String alternateContact, String description, String status, List<String> timeline) {
+        this.id = id;
         this.uid = uid;
         this.name = name;
         this.isForOem = isForOem;
@@ -32,7 +32,15 @@ public class SupportTicket {
         this.alternateContact = alternateContact;
         this.description = description;
         this.status = status;
-        this.timeline = timeline; // Initialize the new field
+        this.timeline = timeline;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     // Getters and setters for all fields including the new field

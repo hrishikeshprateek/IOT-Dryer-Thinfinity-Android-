@@ -37,6 +37,7 @@
     <string name="shows_current_status_and_info_of_the_selected_device_please_update_this_description_section_later_before_deploying_this_project">Shows current status and info of the selected device, please update this description section later before deploying this project.</string>
     <string name="w">W</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="ticket_details">Ticket ID: #%1$s\nTicket type: %2$s\nDescription: %3$s\nRemarks: %4$s\nOur team may contact you on %5$s\nStatus: %6$s</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">General</string>

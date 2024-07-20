@@ -27,6 +27,7 @@ import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.core.adapters.TicketAdapter;
 import thundersharp.thinkfinity.dryer.users.core.model.SupportTicket;
+import thundersharp.thinkfinity.dryer.users.core.model.SupportTicketServer;
 
 public class TicketsFragment extends Fragment {
 
@@ -69,11 +70,11 @@ public class TicketsFragment extends Fragment {
         loadingSpinner.setVisibility(View.VISIBLE);
         String url = HOST_BASE_ADDR_WITH_PORT + "/api/v1/support/tickets/" + token;
 
-        ApiUtils.getInstance(requireContext()).fetchData(url, SupportTicket.class, new ApiUtils.ApiResponseCallback<List<SupportTicket>>() {
+        ApiUtils.getInstance(requireContext()).fetchData(url, SupportTicketServer.class, new ApiUtils.ApiResponseCallback<List<SupportTicketServer>>() {
             @Override
-            public void onSuccess(List<SupportTicket> result) {
+            public void onSuccess(List<SupportTicketServer> result) {
                 loadingSpinner.setVisibility(View.GONE);
-                TicketAdapter adapter = new TicketAdapter(result, TicketsFragment.this::showTicketDetails);
+                TicketAdapter adapter = new TicketAdapter(result, getContext());
                 ticketsRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                 ticketsRecyclerView.setAdapter(adapter);
             }
