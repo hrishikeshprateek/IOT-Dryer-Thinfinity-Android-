@@ -106,10 +106,14 @@ public class ApiUtils {
                         List<T> list = gson.fromJson(response.getJSONArray("data").toString(), type);
                         callback.onSuccess(list);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         callback.onError(e.getMessage());
                     }
                 },
-                error -> callback.onError(error.getMessage()));
+                error -> {
+            error.printStackTrace();
+            callback.onError(error.getMessage());
+                });
 
         getRequestQueue().add(jsonObjectRequest);
     }
@@ -130,6 +134,31 @@ public class ApiUtils {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
+                headers.put("auth", StorageHelper.getInstance(ctx).initUserJWTDataStorage().getRawToken());
+                return headers;
+            }
+        };
+
+        getRequestQueue().add(jsonObjectRequest);
+    }
+
+
+    public <T> void postRawJsonWithAuthHeaderToken(String url, JSONObject rawJson, Class<T> modelClass, final ApiResponseCallback<T> callback) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, rawJson,
+                response -> {
+                    try {
+                        Gson gson = new Gson();
+                        T data = gson.fromJson(response.toString(), modelClass);
+                        callback.onSuccess(data);
+                    } catch (Exception e) {
+                        callback.onError(e.getMessage());
+                    }
+                },
+                error -> callback.onError(error.getMessage())) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
                 headers.put("auth", StorageHelper.getInstance(ctx).initUserJWTDataStorage().getRawToken());
                 return headers;
             }

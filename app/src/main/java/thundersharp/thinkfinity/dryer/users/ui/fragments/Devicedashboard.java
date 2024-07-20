@@ -11,12 +11,14 @@ import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.request.RequestOptions;
 import com.github.mikephil.charting.animation.Easing;
@@ -57,6 +59,8 @@ import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.boot.utils.TimeUtils;
 
+import thundersharp.thinkfinity.dryer.users.core.adapters.DeviceViwer;
+import thundersharp.thinkfinity.dryer.users.core.adapters.EditJobSheetBottomSheet;
 import thundersharp.thinkfinity.dryer.users.core.helpers.SSEClient;
 import thundersharp.thinkfinity.dryer.users.core.model.Device;
 import thundersharp.thinkfinity.dryer.users.core.model.RealTimeDeviceSSEData;
@@ -79,6 +83,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
     private long totalDurationInMillis;
     private long currentTimeInMillis;
     private PieChart chart;
+    private LinearLayout new_temp_rec_placeholder;
 
     @SuppressLint("CheckResult")
     @Override
@@ -92,7 +97,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
         boot_time = view.findViewById(R.id.boot_time);
         cooked_rec = view.findViewById(R.id.cokked_rec);
         chart = view.findViewById(R.id.pie_chart);
-
+        new_temp_rec_placeholder = view.findViewById(R.id.new_temp_rec_placeholder);
 
         temperature = view.findViewById(R.id.stallsVisited);
         humidity = view.findViewById(R.id.projectsReviwed);
@@ -117,6 +122,7 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
                     .create()
                     .show();
         }else {
+            AlertDialog alertDialog = ThinkfinityUtils.createDefaultProgressBar(getActivity());
             ((TextView)view.findViewById(R.id.device_name)).setText(deviceConfig.getDevice_name());
             ((TextView)view.findViewById(R.id.expires_on)).setText(TimeUtils.getTimeFromTimeStamp(deviceConfig.getSubscriptionActiveTill()));
             startSSE();
@@ -128,7 +134,32 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
             totalDurationInMillis = deviceConfig.getSubscriptionActiveTill() - deviceConfig.getSubscriptionActivatedOn();
             currentTimeInMillis = System.currentTimeMillis() - deviceConfig.getSubscriptionActivatedOn();
 
-            ((CardView) view.findViewById(R.id.devices)).setOnClickListener(o -> viewPager.setCurrentItem(4));
+            ((CardView) view.findViewById(R.id.devices)).setOnClickListener(o -> {
+                alertDialog.show();
+                String url = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT+ "/api/v1/user/get/user/device/status/" + storageHelper.getRawToken();
+
+                ApiUtils.getInstance(getContext())
+                        .fetchData(url, Device.class, new ApiUtils.ApiResponseCallback<List<Device>>() {
+                            @Override
+                            public void onSuccess(List<Device> result) {
+                                requireActivity().runOnUiThread(() ->{
+                                    alertDialog.dismiss();
+                                    EditJobSheetBottomSheet bottomSheet = new EditJobSheetBottomSheet();
+                                    bottomSheet.setDeviceData(result);
+                                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                    bottomSheet.show(fragmentManager, "EditJobSheetBottomSheet");
+
+                                });
+                            }
+
+                            @Override
+                            public void onError(String errorMessage) {
+                                alertDialog.dismiss();
+                                requireActivity().runOnUiThread(() -> ThinkfinityUtils.createErrorMessage(getActivity(), errorMessage).show());
+                            }
+                        });
+
+            });
             ((CardView) view.findViewById(R.id.public_rec)).setOnClickListener(o -> viewPager.setCurrentItem(1));
             ((CardView) view.findViewById(R.id.private_rec)).setOnClickListener(o -> startActivity(new Intent(requireActivity(), PrivateRecipes.class)));
             ((CardView) view.findViewById(R.id.iniatives)).setOnClickListener(p -> viewPager.setCurrentItem(2));
