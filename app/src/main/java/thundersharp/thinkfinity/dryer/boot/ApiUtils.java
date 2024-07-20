@@ -142,6 +142,29 @@ public class ApiUtils {
         getRequestQueue().add(jsonObjectRequest);
     }
 
+    public <T> void fetchDataWithAuthHeaderTokenWithoutFormat(String url, Class<T> modelClass, final ApiResponseCallback<JSONObject> callback) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        Gson gson = new Gson();
+                        T data = gson.fromJson(response.toString(), modelClass);
+                        callback.onSuccess(response);
+                    } catch (Exception e) {
+                        callback.onError(e.getMessage());
+                    }
+                },
+                error -> callback.onError(error.getMessage())) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("auth", StorageHelper.getInstance(ctx).initUserJWTDataStorage().getRawToken());
+                return headers;
+            }
+        };
+
+        getRequestQueue().add(jsonObjectRequest);
+    }
+
 
     public <T> void postRawJsonWithAuthHeaderToken(String url, JSONObject rawJson, Class<T> modelClass, final ApiResponseCallback<T> callback) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, rawJson,

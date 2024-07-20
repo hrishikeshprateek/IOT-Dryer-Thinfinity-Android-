@@ -243,4 +243,15 @@ public class UsersHome extends AppCompatActivity implements onRestart {
 
         dialog.show();
     }
+
+    @Override
+    public void onBackPressed() {
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Exit ?")
+                .setMessage("Are you sure you want to exit the app ??")
+                .setPositiveButton("CANCEL", (d,e) -> d.dismiss())
+                .setNegativeButton("EXIT", (f,r)->super.onBackPressed())
+                .setCancelable(true)
+                .show();
+    }
 }

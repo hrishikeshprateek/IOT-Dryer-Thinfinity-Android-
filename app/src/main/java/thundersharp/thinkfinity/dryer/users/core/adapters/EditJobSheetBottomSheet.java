@@ -1,5 +1,7 @@
 package thundersharp.thinkfinity.dryer.users.core.adapters;
 
+import static thundersharp.thinkfinity.dryer.users.UsersHome.viewPager;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,7 +107,10 @@ public class EditJobSheetBottomSheet extends BottomSheetDialogFragment {
         customerAutoTV.setOnItemClickListener((parent, viewR, position, id) -> {
             selectedIndex = (position + 1);
         });
-
+        view.findViewById(R.id.btn_history).setOnClickListener(o -> {
+            viewPager.setCurrentItem(3);
+            dismiss();
+        });
         return view;
     }
 

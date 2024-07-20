@@ -34,6 +34,7 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.animations.DescriptionAnimation;
 import com.glide.slider.library.slidertypes.DefaultSliderView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.gson.Gson;
 
@@ -163,6 +164,41 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
             ((CardView) view.findViewById(R.id.public_rec)).setOnClickListener(o -> viewPager.setCurrentItem(1));
             ((CardView) view.findViewById(R.id.private_rec)).setOnClickListener(o -> startActivity(new Intent(requireActivity(), PrivateRecipes.class)));
             ((CardView) view.findViewById(R.id.iniatives)).setOnClickListener(p -> viewPager.setCurrentItem(2));
+            ((CardView) view.findViewById(R.id.jobsheet_history)).setOnClickListener(p -> {
+                alertDialog.show();
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity());
+                bottomSheetDialog.setContentView(R.layout.bottom_boot_data);
+                String url = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT+"/api/vi/device/get/all/bootedDevice";
+                ApiUtils
+                        .getInstance(requireActivity())
+                                .fetchDataWithAuthHeaderTokenWithoutFormat(url, JSONObject.class, new ApiUtils.ApiResponseCallback<JSONObject>() {
+                                    @Override
+                                    public void onSuccess(JSONObject result) {
+                                        try {
+                                            System.out.println(result.toString());
+                                            JSONObject data = result.getJSONObject("data").getJSONObject(deviceConfig.getId());
+                                            ((TextView) bottomSheetDialog.findViewById(R.id.value1)).setText(data.getString("LAST_RECIPE"));
+                                            cooked_rec.setText(data.getString("LAST_RECIPE"));
+                                            ((TextView) bottomSheetDialog.findViewById(R.id.value2)).setText(data.getBoolean("CURRENT_STATE") ? "Active" : "Inactive");
+                                            ((TextView) bottomSheetDialog.findViewById(R.id.value3)).setText(TimeUtils.getTimeFromTimeStamp(data.getLong("BOOT_TIME")));
+                                            alertDialog.dismiss();
+                                        }catch (Exception e){
+                                            bottomSheetDialog.dismiss();
+                                            Toast.makeText(requireActivity(), "Error occoured !!", Toast.LENGTH_SHORT).show();
+                                            e.printStackTrace();
+                                            alertDialog.dismiss();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        ThinkfinityUtils.createErrorMessage(requireActivity(), errorMessage).show();
+                                        alertDialog.dismiss();
+                                    }
+                                });
+
+                bottomSheetDialog.show();
+            });
 
             ((CardView) view.findViewById(R.id.cardPro)).setOnClickListener(p -> startActivity(new Intent(requireActivity(), ProfileActivity.class)));
 
