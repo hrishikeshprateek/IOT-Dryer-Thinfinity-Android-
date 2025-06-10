@@ -10,7 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.agrawalsuneet.dotsloader.loaders.LazyLoader;
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -28,7 +29,7 @@ public class AllDevices extends Fragment {
     private RecyclerView recyclerView;
     private StorageHelper storageHelper;
     ExecutorService executorService;
-    private LazyLoader lazyLoader;
+    private SpinKitView lazyLoader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,7 +40,9 @@ public class AllDevices extends Fragment {
         storageHelper = StorageHelper.getInstance(getContext()).initUserJWTDataStorage();
 
         recyclerView = view.findViewById(R.id.recycler);
-        lazyLoader = view.findViewById(R.id.loaderD);
+        lazyLoader = view.findViewById(R.id.loader);
+        ThreeBounce threeBounce = new ThreeBounce();
+        lazyLoader.setIndeterminateDrawable(threeBounce);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

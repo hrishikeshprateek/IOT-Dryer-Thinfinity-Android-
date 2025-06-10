@@ -233,29 +233,23 @@
                         app:cardCornerRadius="12dp"
                         app:cardElevation="4dp">
 
-                        <me.itangqi.waveloadingview.WaveLoadingView
+                        <com.github.lzyzsd.circleprogress.DonutProgress
                             android:id="@+id/stallsVisited"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#E1E1E1"
-                            app:wlv_borderColor="#EAEAEA"
-                            app:wlv_borderWidth="3dp"
-                            app:wlv_progressValue="0"
-                            app:wlv_round_rectangle="true"
-                            app:wlv_shapeType="rectangle"
-                            app:wlv_titleBottom="Temp (MAX 100)"
-                            app:wlv_titleBottomColor="#ffff"
-                            app:wlv_titleBottomSize="14sp"
-                            app:wlv_titleBottomStrokeColor="#A11545"
-                            app:wlv_titleBottomStrokeWidth="2dp"
-                            app:wlv_titleCenter="0 C"
-                            app:wlv_titleCenterColor="@android:color/white"
-                            app:wlv_titleCenterSize="20sp"
-                            app:wlv_titleCenterStrokeColor="#8A8888"
-                            app:wlv_titleCenterStrokeWidth="2dp"
-                            app:wlv_waveAmplitude="50"
-                            app:wlv_waveColor="#A11545" />
-
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:padding="16dp"
+                            app:donut_progress="0"
+                            app:donut_max="100"
+                            app:donut_text="0°C"
+                            app:donut_text_size="24sp"
+                            app:donut_text_color="@android:color/white"
+                            app:donut_finished_color="#A11545"
+                            app:donut_unfinished_color="#EAEAEA"
+                            app:donut_inner_bottom_text="Temp (MAX 100)"
+                            app:donut_inner_bottom_text_size="14sp"
+                            app:donut_inner_bottom_text_color="#FFFFFF"
+                            app:donut_background_color="#E1E1E1"/>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -268,29 +262,23 @@
                         app:cardCornerRadius="12dp"
                         app:cardElevation="4dp">
 
-                        <me.itangqi.waveloadingview.WaveLoadingView
+                        <com.github.lzyzsd.circleprogress.DonutProgress
                             android:id="@+id/projectsReviwed"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#E1E1E1"
-                            app:wlv_borderColor="#EAEAEA"
-                            app:wlv_borderWidth="3dp"
-                            app:wlv_progressValue="0"
-                            app:wlv_round_rectangle="true"
-                            app:wlv_shapeType="rectangle"
-                            app:wlv_titleBottom="Humidity"
-                            app:wlv_titleBottomColor="#ffff"
-                            app:wlv_titleBottomSize="14sp"
-                            app:wlv_titleBottomStrokeColor="#03A9F4"
-                            app:wlv_titleBottomStrokeWidth="2dp"
-                            app:wlv_titleCenter="0 rh"
-                            app:wlv_titleCenterColor="@android:color/white"
-                            app:wlv_titleCenterSize="20sp"
-                            app:wlv_titleCenterStrokeColor="#8A8888"
-                            app:wlv_titleCenterStrokeWidth="2dp"
-                            app:wlv_waveAmplitude="50"
-                            app:wlv_waveColor="#03A9F4" />
-
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:padding="16dp"
+                            app:donut_progress="0"
+                            app:donut_max="100"
+                            app:donut_text="0% RH"
+                            app:donut_text_size="20sp"
+                            app:donut_text_color="@android:color/white"
+                            app:donut_finished_color="#03A9F4"
+                            app:donut_unfinished_color="#EAEAEA"
+                            app:donut_inner_bottom_text="Humidity"
+                            app:donut_inner_bottom_text_size="14sp"
+                            app:donut_inner_bottom_text_color="#03A9F4"
+                            app:donut_background_color="#E1E1E1"/>
                     </androidx.cardview.widget.CardView>
 
                 </LinearLayout>

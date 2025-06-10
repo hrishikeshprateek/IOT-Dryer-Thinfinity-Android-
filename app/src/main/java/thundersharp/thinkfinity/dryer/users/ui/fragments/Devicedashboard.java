@@ -5,7 +5,6 @@ import static thundersharp.thinkfinity.dryer.users.UsersHome.viewPager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
@@ -21,14 +20,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.request.RequestOptions;
+import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.glide.slider.library.SliderLayout;
@@ -50,7 +48,6 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import me.itangqi.waveloadingview.WaveLoadingView;
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.boot.ApiUtils;
 import thundersharp.thinkfinity.dryer.boot.DeviceConfig;
@@ -59,8 +56,6 @@ import thundersharp.thinkfinity.dryer.boot.barcode.BarCodeScanner;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.boot.utils.TimeUtils;
-
-import thundersharp.thinkfinity.dryer.users.core.adapters.DeviceViwer;
 import thundersharp.thinkfinity.dryer.users.core.adapters.EditJobSheetBottomSheet;
 import thundersharp.thinkfinity.dryer.users.core.helpers.SSEClient;
 import thundersharp.thinkfinity.dryer.users.core.model.Device;
@@ -73,7 +68,7 @@ import thundersharp.thinkfinity.dryer.users.ui.support.SupportHome;
 public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
 
     private ExecutorService executorService;
-    private WaveLoadingView temperature, humidity;
+    private DonutProgress temperature, humidity;
     private SSEClient sseClient;
     private StorageHelper storageHelper;
     private Device deviceConfig;
@@ -352,11 +347,11 @@ public class Devicedashboard extends Fragment implements SSEClient.SSEListener{
             if (realTimeDeviceSSEData != null) {
                 requireActivity().runOnUiThread(() -> {
                     boot_time.setText(TimeUtils.getTimeFromTimeStamp(realTimeDeviceSSEData.getLOG_TIME()));
-                    temperature.setProgressValue(realTimeDeviceSSEData.getTEMP());
-                    humidity.setProgressValue(realTimeDeviceSSEData.getHUMIDITY());
+                    temperature.setProgress(realTimeDeviceSSEData.getTEMP());
+                    humidity.setProgress(realTimeDeviceSSEData.getHUMIDITY());
 
-                    temperature.setCenterTitle(realTimeDeviceSSEData.getTEMP()+" C");
-                    humidity.setCenterTitle(realTimeDeviceSSEData.getHUMIDITY()+" rh");
+                    temperature.setText(realTimeDeviceSSEData.getTEMP()+" C");
+                    humidity.setText(realTimeDeviceSSEData.getHUMIDITY()+" rh");
                 });
             }
         }catch (Exception e){

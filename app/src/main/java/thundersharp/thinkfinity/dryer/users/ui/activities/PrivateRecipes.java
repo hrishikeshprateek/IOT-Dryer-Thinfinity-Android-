@@ -1,10 +1,5 @@
 package thundersharp.thinkfinity.dryer.users.ui.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -13,10 +8,15 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.agrawalsuneet.dotsloader.loaders.LazyLoader;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
+
+
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,6 @@ import java.util.concurrent.Executors;
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.boot.ApiUtils;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
-import thundersharp.thinkfinity.dryer.boot.serverStat.BootServerUtil;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
 import thundersharp.thinkfinity.dryer.users.core.adapters.RecipieHolderAdapter;
 import thundersharp.thinkfinity.dryer.users.core.model.PublicRecipe;
@@ -40,7 +39,7 @@ public class PrivateRecipes extends AppCompatActivity {
     private RecipieHolderAdapter adapter;
     private RecyclerView recyclerView;
     private StorageHelper storageHelper;
-    private LazyLoader lazyLoader;
+    private SpinKitView lazyLoader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

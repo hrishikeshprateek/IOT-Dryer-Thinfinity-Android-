@@ -8,25 +8,18 @@
     android:gravity="top"
     tools:context=".users.ui.fragments.JobsheetRecord">
 
-    <com.agrawalsuneet.dotsloader.loaders.LazyLoader
-        android:id="@+id/loaderC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/loaderASk"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        app:lazyloader_animDur="800"
-        app:lazyloader_dotsDist="10dp"
-        app:lazyloader_dotsRadius="7dp"
-        app:lazyloader_firstDelayDur="150"
-        app:lazyloader_firstDotColor="#E91E63"
-        app:lazyloader_interpolator="@android:anim/decelerate_interpolator"
-        app:lazyloader_secondDelayDur="300"
-        app:lazyloader_secondDotColor="#009688"
-        app:lazyloader_thirdDotColor="#2196F3" />
-
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        app:SpinKit_Color="#E91E63"
+        app:SpinKit_Style="ThreeBounce" />
 
     <LinearLayout
         android:id="@+id/topCard"

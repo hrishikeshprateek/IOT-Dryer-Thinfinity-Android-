@@ -22,7 +22,8 @@ import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 
 public class ThinkfinityUtils {
     public static NsdServiceInfo nsdServiceInfoGlobal = null;
-    public static final String HOST_BASE_ADDR_WITH_PORT = "http://api.aqozone.com";
+
+    public static final String HOST_BASE_ADDR_WITH_PORT = "https://heatpump-backend.onrender.com";
     public static final String BOOT_MODE_FOR_SCANNER = "SCANNER_MODE";
     public static final String SECURE_SHARED_PREF = "secret_shared_prefs";
     public static final String USER_NAME_JWT = "name";

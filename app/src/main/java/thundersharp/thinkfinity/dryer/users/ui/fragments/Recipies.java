@@ -16,19 +16,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.agrawalsuneet.dotsloader.loaders.LazyLoader;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -41,9 +34,7 @@ import thundersharp.thinkfinity.dryer.boot.ApiUtils;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
 import thundersharp.thinkfinity.dryer.boot.serverStat.BootServerUtil;
 import thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils;
-import thundersharp.thinkfinity.dryer.users.core.SpringServerHelper;
 import thundersharp.thinkfinity.dryer.users.core.adapters.RecipieHolderAdapter;
-import thundersharp.thinkfinity.dryer.users.core.interfaces.OnServerEvents;
 import thundersharp.thinkfinity.dryer.users.core.model.PublicRecipe;
 import thundersharp.thinkfinity.dryer.users.ui.activities.PrivateRecipes;
 
@@ -54,7 +45,7 @@ public class Recipies extends Fragment {
     private RecipieHolderAdapter adapter;
     private RecyclerView recyclerView;
     private StorageHelper storageHelper;
-    private LazyLoader lazyLoader;
+    private SpinKitView lazyLoader;
     private RelativeLayout fab_private;
 
     @Override
@@ -66,7 +57,9 @@ public class Recipies extends Fragment {
         storageHelper = StorageHelper.getInstance(requireActivity()).initUserJWTDataStorage();
 
         recyclerView = view.findViewById(R.id.rec);
-        lazyLoader = view.findViewById(R.id.loader);
+        lazyLoader = view.findViewById(R.id.loaderAS);
+        ThreeBounce threeBounce = new ThreeBounce();
+        lazyLoader.setIndeterminateDrawable(threeBounce);
         fab_private = view.findViewById(R.id.fab_private);
         search_bar_edit_text = view.findViewById(R.id.search_bar_edit_text);
 

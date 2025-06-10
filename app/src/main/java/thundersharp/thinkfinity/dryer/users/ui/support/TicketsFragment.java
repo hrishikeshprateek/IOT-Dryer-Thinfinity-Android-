@@ -3,24 +3,18 @@ package thundersharp.thinkfinity.dryer.users.ui.support;
 import static thundersharp.thinkfinity.dryer.boot.utils.ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
-
 import java.util.List;
-import java.util.Map;
-
-import thundersharp.thinkfinity.dryer.JSONUtils;
 import thundersharp.thinkfinity.dryer.R;
 import thundersharp.thinkfinity.dryer.boot.ApiUtils;
 import thundersharp.thinkfinity.dryer.boot.helpers.StorageHelper;
@@ -33,12 +27,9 @@ public class TicketsFragment extends Fragment {
 
     private RecyclerView ticketsRecyclerView;
     private CircularProgressIndicator loadingSpinner;
-    private RequestQueue requestQueue;
-    private Map<String, Object> decodedToken;
-    private StorageHelper storageHelper;
 
     public TicketsFragment() {
-        // Required empty public constructor
+
     }
 
     @Nullable
@@ -46,17 +37,13 @@ public class TicketsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tickets, container, false);
-
-        requestQueue = Volley.newRequestQueue(requireContext());
-        storageHelper = StorageHelper.getInstance(requireContext()).initUserJWTDataStorage();
+        StorageHelper storageHelper = StorageHelper.getInstance(requireContext()).initUserJWTDataStorage();
         String token = storageHelper.getRawToken();
 
         if (token == null) {
             Toast.makeText(requireContext(), "Token is null", Toast.LENGTH_SHORT).show();
             return view;
         }
-
-        decodedToken = JSONUtils.extractClaimsFromToken(token);
 
         ticketsRecyclerView = view.findViewById(R.id.ticketsRecyclerView);
         loadingSpinner = view.findViewById(R.id.loadingSpinner);

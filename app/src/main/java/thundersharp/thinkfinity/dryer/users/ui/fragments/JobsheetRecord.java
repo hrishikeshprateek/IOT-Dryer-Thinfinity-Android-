@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.agrawalsuneet.dotsloader.loaders.LazyLoader;
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -31,7 +31,7 @@ public class JobsheetRecord extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_jobsheet_record, container, false);
         DeviceConfig deviceConfig = DeviceConfig.getDeviceConfig(requireActivity()).initializeStorage();
 
-        LazyLoader loader = view.findViewById(R.id.loaderC);
+        SpinKitView loader = view.findViewById(R.id.loaderASk);
         if (deviceConfig.getCurrentDevice() == null){
             Toast.makeText(requireActivity(), "Select device first !!!", Toast.LENGTH_SHORT).show();
         }else {
@@ -42,7 +42,7 @@ public class JobsheetRecord extends Fragment {
         return view;
     }
 
-    private void loadData(DeviceConfig deviceConfig, LazyLoader loader){
+    private void loadData(DeviceConfig deviceConfig, SpinKitView loader){
         String url = ThinkfinityUtils.HOST_BASE_ADDR_WITH_PORT+"/api/vi/device/get/all/jobSheetRecords/"+deviceConfig.getCurrentDevice().getId();
         ApiUtils
                 .getInstance(requireActivity())

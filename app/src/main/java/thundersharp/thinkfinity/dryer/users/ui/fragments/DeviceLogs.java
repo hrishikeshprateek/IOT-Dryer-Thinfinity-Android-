@@ -1,21 +1,16 @@
 package thundersharp.thinkfinity.dryer.users.ui.fragments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.agrawalsuneet.dotsloader.loaders.LazyLoader;
-
-import org.json.JSONObject;
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.github.ybq.android.spinkit.style.ThreeBounce;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -36,7 +31,7 @@ public class DeviceLogs extends Fragment {
     private StorageHelper storageHelper;
     private DeviceConfig deviceConfig;
     private RecyclerView rec;
-    private LazyLoader lazyLoader;
+    private SpinKitView lazyLoader;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +42,9 @@ public class DeviceLogs extends Fragment {
         deviceConfig = DeviceConfig.getDeviceConfig(requireActivity()).initializeStorage();
 
         rec = view.findViewById(R.id.rec);
-        lazyLoader = view.findViewById(R.id.loaderA);
+        lazyLoader = view.findViewById(R.id.loaderAS);
+        ThreeBounce threeBounce = new ThreeBounce();
+        lazyLoader.setIndeterminateDrawable(threeBounce);
 
         if (deviceConfig.getCurrentDevice() != null)
             executorService.execute(this::fetchData);
